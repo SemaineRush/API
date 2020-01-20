@@ -1,0 +1,17 @@
+fos_user:
+    registration:
+        confirmation:
+            enabled: true
+
+    from_email:
+        address:        alice.bonnet@supinternet.fr
+        sender_name:    Sup'Internet Vote App
+
+    service:
+        mailer: fos_user.mailer.twig_swift
+    resetting:
+        email:
+            template:   email/password_resetting.email.twig
+    registration:
+        confirmation:
+            template:   '@FOSUser/Registration/email.txt.twig'
