@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CandidatesRepository")
- * @ApiResource
  */
-class Candidates
+class Candidate
 {
     /**
      * @ORM\Id()
@@ -20,10 +19,7 @@ class Candidates
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="candidates")
-     */
-    private $user;
+
 
     /**
      * @ORM\Column(type="text")
@@ -36,13 +32,20 @@ class Candidates
     private $infos;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ElectionHasCandidates", mappedBy="candidate")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Election", mappedBy="candidateElection")
      */
-    private $electionHasCandidates;
+    private $elections;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidates")
+     */
+    private $userRelated;
+
+
 
     public function __construct()
     {
-        $this->electionHasCandidates = new ArrayCollection();
+        $this->elections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,32 +90,41 @@ class Candidates
     }
 
     /**
-     * @return Collection|ElectionHasCandidates[]
+     * @return Collection|Election[]
      */
-    public function getElectionHasCandidates(): Collection
+    public function getElections(): Collection
     {
-        return $this->electionHasCandidates;
+        return $this->elections;
     }
 
-    public function addElectionHasCandidate(ElectionHasCandidates $electionHasCandidate): self
+    public function addElection(Election $election): self
     {
-        if (!$this->electionHasCandidates->contains($electionHasCandidate)) {
-            $this->electionHasCandidates[] = $electionHasCandidate;
-            $electionHasCandidate->setCandidate($this);
+        if (!$this->elections->contains($election)) {
+            $this->elections[] = $election;
+            $election->addCandidateElection($this);
         }
 
         return $this;
     }
 
-    public function removeElectionHasCandidate(ElectionHasCandidates $electionHasCandidate): self
+    public function removeElection(Election $election): self
     {
-        if ($this->electionHasCandidates->contains($electionHasCandidate)) {
-            $this->electionHasCandidates->removeElement($electionHasCandidate);
-            // set the owning side to null (unless already changed)
-            if ($electionHasCandidate->getCandidate() === $this) {
-                $electionHasCandidate->setCandidate(null);
-            }
+        if ($this->elections->contains($election)) {
+            $this->elections->removeElement($election);
+            $election->removeCandidateElection($this);
         }
+
+        return $this;
+    }
+
+    public function getUserRelated(): ?User
+    {
+        return $this->userRelated;
+    }
+
+    public function setUserRelated(?User $userRelated): self
+    {
+        $this->userRelated = $userRelated;
 
         return $this;
     }

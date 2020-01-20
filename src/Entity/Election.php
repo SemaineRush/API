@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="App\Repository\ElectionsRepository")
  * @ApiResource
  */
-class Elections
+class Election
 {
     /**
      * @ORM\Id()
@@ -41,19 +41,21 @@ class Elections
     private $localisation;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Users", mappedBy="vote")
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="election")
      */
-    private $users;
+    private $voter;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ElectionHasCandidates", mappedBy="election")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Candidate", inversedBy="elections")
      */
-    private $electionHasElections;
+    private $candidateElection;
+
+
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->electionHasElections = new ArrayCollection();
+        $this->voter = new ArrayCollection();
+        $this->candidateElection = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,59 +112,57 @@ class Elections
     }
 
     /**
-     * @return Collection|Users[]
+     * @return Collection|User[]
      */
-    public function getUsers(): Collection
+    public function getVoter(): Collection
     {
-        return $this->users;
+        return $this->voter;
     }
 
-    public function addUser(Users $user): self
+    public function addVoter(User $voter): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addVote($this);
+        if (!$this->voter->contains($voter)) {
+            $this->voter[] = $voter;
+            $voter->setElection($this);
         }
 
         return $this;
     }
 
-    public function removeUser(Users $user): self
+    public function removeVoter(User $voter): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            $user->removeVote($this);
+        if ($this->voter->contains($voter)) {
+            $this->voter->removeElement($voter);
+            // set the owning side to null (unless already changed)
+            if ($voter->getElection() === $this) {
+                $voter->setElection(null);
+            }
         }
 
         return $this;
     }
 
     /**
-     * @return Collection|ElectionHasCandidates[]
+     * @return Collection|Candidate[]
      */
-    public function getElectionHasElections(): Collection
+    public function getCandidateElection(): Collection
     {
-        return $this->electionHasElections;
+        return $this->candidateElection;
     }
 
-    public function addElectionHasElection(ElectionHasCandidates $electionHasElection): self
+    public function addCandidateElection(Candidate $candidateElection): self
     {
-        if (!$this->electionHasElections->contains($electionHasElection)) {
-            $this->electionHasElections[] = $electionHasElection;
-            $electionHasElection->setElection($this);
+        if (!$this->candidateElection->contains($candidateElection)) {
+            $this->candidateElection[] = $candidateElection;
         }
 
         return $this;
     }
 
-    public function removeElectionHasElection(ElectionHasCandidates $electionHasElection): self
+    public function removeCandidateElection(Candidate $candidateElection): self
     {
-        if ($this->electionHasElections->contains($electionHasElection)) {
-            $this->electionHasElections->removeElement($electionHasElection);
-            // set the owning side to null (unless already changed)
-            if ($electionHasElection->getElection() === $this) {
-                $electionHasElection->setElection(null);
-            }
+        if ($this->candidateElection->contains($candidateElection)) {
+            $this->candidateElection->removeElement($candidateElection);
         }
 
         return $this;

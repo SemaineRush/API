@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UsersRepository")
  * @ApiResource
  */
-class Users implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -48,19 +48,19 @@ class Users implements UserInterface
     private $lastname;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Candidates", mappedBy="user")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="voter")
+     */
+    private $election;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated")
      */
     private $candidates;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Elections", inversedBy="users")
-     */
-    private $vote;
 
     public function __construct()
     {
         $this->candidates = new ArrayCollection();
-        $this->vote = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,58 +165,44 @@ class Users implements UserInterface
         return $this;
     }
 
+    public function getElection(): ?Election
+    {
+        return $this->election;
+    }
+
+    public function setElection(?Election $election): self
+    {
+        $this->election = $election;
+
+        return $this;
+    }
+
     /**
-     * @return Collection|Candidates[]
+     * @return Collection|Candidate[]
      */
     public function getCandidates(): Collection
     {
         return $this->candidates;
     }
 
-    public function addCandidate(Candidates $candidate): self
+    public function addCandidate(Candidate $candidate): self
     {
         if (!$this->candidates->contains($candidate)) {
             $this->candidates[] = $candidate;
-            $candidate->setUser($this);
+            $candidate->setUserRelated($this);
         }
 
         return $this;
     }
 
-    public function removeCandidate(Candidates $candidate): self
+    public function removeCandidate(Candidate $candidate): self
     {
         if ($this->candidates->contains($candidate)) {
             $this->candidates->removeElement($candidate);
             // set the owning side to null (unless already changed)
-            if ($candidate->getUser() === $this) {
-                $candidate->setUser(null);
+            if ($candidate->getUserRelated() === $this) {
+                $candidate->setUserRelated(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Elections[]
-     */
-    public function getVote(): Collection
-    {
-        return $this->vote;
-    }
-
-    public function addVote(Elections $vote): self
-    {
-        if (!$this->vote->contains($vote)) {
-            $this->vote[] = $vote;
-        }
-
-        return $this;
-    }
-
-    public function removeVote(Elections $vote): self
-    {
-        if ($this->vote->contains($vote)) {
-            $this->vote->removeElement($vote);
         }
 
         return $this;
