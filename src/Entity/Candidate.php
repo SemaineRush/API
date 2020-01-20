@@ -53,17 +53,7 @@ class Candidate
         return $this->id;
     }
 
-    public function getUser(): ?Users
-    {
-        return $this->user;
-    }
 
-    public function setUser(?Users $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 
     public function getStylesheet(): ?string
     {

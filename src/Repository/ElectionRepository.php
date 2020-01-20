@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Election;
 use App\Entity\Elections;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -12,11 +13,11 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Elections[]    findAll()
  * @method Elections[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ElectionsRepository extends ServiceEntityRepository
+class ElectionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Elections::class);
+        parent::__construct($registry, Election::class);
     }
 
     // /**
