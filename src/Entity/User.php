@@ -6,56 +6,39 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ApiResource
  */
-class User implements UserInterface
+class User extends BaseUser
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastname;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated")
      */
+<<<<<<< HEAD
+    protected $election;
+=======
     private $candidates;
+>>>>>>> 4c7e85eb3fa70794a7dc3260c94034b590f52da4
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Election", mappedBy="voter")
      */
+<<<<<<< HEAD
+    protected $candidates;
+=======
     private $elections;
+>>>>>>> 4c7e85eb3fa70794a7dc3260c94034b590f52da4
 
 
     public function __construct()
@@ -64,6 +47,16 @@ class User implements UserInterface
         $this->elections = new ArrayCollection();
     }
 
+<<<<<<< HEAD
+    public function getElection(): ?Election
+    {
+        return $this->election;
+    }
+
+    public function setElection(?Election $election): self
+    {
+        $this->election = $election;
+=======
     public function getId(): ?int
     {
         return $this->id;
@@ -162,6 +155,7 @@ class User implements UserInterface
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
+>>>>>>> 4c7e85eb3fa70794a7dc3260c94034b590f52da4
 
         return $this;
     }
