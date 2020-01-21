@@ -21,7 +21,8 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "fzaninotto/faker": "^1.9"
+        "fzaninotto/faker": "^1.9",
+        "symfony/web-server-bundle": "4.3.*"
     },
     "config": {
         "preferred-install": {
