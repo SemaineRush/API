@@ -48,19 +48,20 @@ class User implements UserInterface
     private $lastname;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="voter")
-     */
-    private $election;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated")
      */
     private $candidates;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Election", mappedBy="voter")
+     */
+    private $elections;
 
 
     public function __construct()
     {
         $this->candidates = new ArrayCollection();
+        $this->elections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,18 +166,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getElection(): ?Election
-    {
-        return $this->election;
-    }
-
-    public function setElection(?Election $election): self
-    {
-        $this->election = $election;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Candidate[]
      */
@@ -203,6 +192,34 @@ class User implements UserInterface
             if ($candidate->getUserRelated() === $this) {
                 $candidate->setUserRelated(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Election[]
+     */
+    public function getElections(): Collection
+    {
+        return $this->elections;
+    }
+
+    public function addElection(Election $election): self
+    {
+        if (!$this->elections->contains($election)) {
+            $this->elections[] = $election;
+            $election->addVoter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeElection(Election $election): self
+    {
+        if ($this->elections->contains($election)) {
+            $this->elections->removeElement($election);
+            $election->removeVoter($this);
         }
 
         return $this;

@@ -44,14 +44,14 @@ class Election
     private $localisation;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="election")
-     */
-    private $voter;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Candidate", inversedBy="elections")
      */
     private $candidateElection;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="elections")
+     */
+    private $voter;
 
 
 
@@ -114,36 +114,6 @@ class Election
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getVoter(): Collection
-    {
-        return $this->voter;
-    }
-
-    public function addVoter(User $voter): self
-    {
-        if (!$this->voter->contains($voter)) {
-            $this->voter[] = $voter;
-            $voter->setElection($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVoter(User $voter): self
-    {
-        if ($this->voter->contains($voter)) {
-            $this->voter->removeElement($voter);
-            // set the owning side to null (unless already changed)
-            if ($voter->getElection() === $this) {
-                $voter->setElection(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Candidate[]
@@ -166,6 +136,32 @@ class Election
     {
         if ($this->candidateElection->contains($candidateElection)) {
             $this->candidateElection->removeElement($candidateElection);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getVoter(): Collection
+    {
+        return $this->voter;
+    }
+
+    public function addVoter(User $voter): self
+    {
+        if (!$this->voter->contains($voter)) {
+            $this->voter[] = $voter;
+        }
+
+        return $this;
+    }
+
+    public function removeVoter(User $voter): self
+    {
+        if ($this->voter->contains($voter)) {
+            $this->voter->removeElement($voter);
         }
 
         return $this;
