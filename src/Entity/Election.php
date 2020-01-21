@@ -8,7 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ElectionsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
  * @ApiResource
  */
 class Election

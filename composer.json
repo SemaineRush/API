@@ -14,13 +14,17 @@
         "symfony/dotenv": "4.3.*",
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "4.3.*",
-        "symfony/maker-bundle": "^1.14",
         "symfony/swiftmailer-bundle": "^3.4",
         "symfony/translation": "4.3.*",
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
+<<<<<<< HEAD
+=======
+        "fzaninotto/faker": "^1.9",
+        "symfony/maker-bundle": "^1.14",
+>>>>>>> 9f12361e4c8160290ea171e3f9868f3ba6de3743
         "symfony/web-server-bundle": "4.3.*"
     },
     "config": {
