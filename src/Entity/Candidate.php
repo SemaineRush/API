@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CandidateRepository")
- * @ApiResource
+ * @ApiResource(
+ *      collectionOperations={"get"},
+ *      itemOperations={"get"}
+ * )
  */
 class Candidate
 {
@@ -41,6 +44,11 @@ class Candidate
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidates")
      */
     private $userRelated;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nb_votes;
 
 
 
@@ -114,6 +122,18 @@ class Candidate
     public function setUserRelated(?User $userRelated): self
     {
         $this->userRelated = $userRelated;
+
+        return $this;
+    }
+
+    public function getNbVotes(): ?int
+    {
+        return $this->nb_votes;
+    }
+
+    public function setNbVotes(?int $nb_votes): self
+    {
+        $this->nb_votes = $nb_votes;
 
         return $this;
     }

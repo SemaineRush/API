@@ -20,11 +20,8 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-<<<<<<< HEAD
-=======
         "fzaninotto/faker": "^1.9",
         "symfony/maker-bundle": "^1.14",
->>>>>>> 9f12361e4c8160290ea171e3f9868f3ba6de3743
         "symfony/web-server-bundle": "4.3.*"
     },
     "config": {

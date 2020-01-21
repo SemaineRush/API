@@ -29,6 +29,9 @@ class AppFixtures extends Fixture
     {
         
         $faker=Factory::create("fr_FR");
+        $votants=[];
+        $elections=[];
+        $candidates=[];
         for ($i=0; $i < 10; $i++) { 
             $user=new User;
             $hash = $this->encoder->encodePassword($user, "password");
@@ -37,17 +40,37 @@ class AppFixtures extends Fixture
                 ->setEmail($faker->email)
                 ->setPassword($hash);
                 $manager->persist($user);
-            
-            $candidate=new Candidate;
-            $candidate->setInfos($faker->text)
-                      ->setStylesheet("body{text-align:center}")
-                      ->setUserRelated($user);
-
+            if($i<3){
+                $candidate=new Candidate;
+                $candidate->setInfos($faker->text)
+                          ->setStylesheet("body{text-align:center}")
+                          ->setUserRelated($user);
+                          $candidates[]=$candidate;
+                          $manager->persist($candidate);
+            }else{
+                $votants[]=$user;
+            }
 
             $election=new Election;
-
+            $election->setEnd($faker->dateTimeBetween("-6 months"))
+                    ->setStart($faker->dateTimeBetween("-2 months"))
+                    ->setLocalisation("Paris")
+                    ->setName("election BDE");
+                    $manager->persist($election);
 
         }
+        foreach ($elections as $election){
+            $firstVotant = $votants[mt_rand(0,3)];
+            $secondVotant = $votants[mt_rand(3,7)];
+            $firstCandidate=$candidates[mt_rand(0,1)];
+            $secondCandidate=$candidates[2];
+            $election->addVoter($firstVotant);
+            $election->addVoter($secondVotant);
+            $election->addCandidateElection($firstCandidate);
+            $election->addCandidateElection($secondCandidate);
+        }
+
+
 
         $manager->flush();
     }
