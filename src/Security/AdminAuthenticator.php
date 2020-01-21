@@ -71,6 +71,10 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
+        if (!in_array("ROLE_ADMIN", $user->getRoles())) {
+            throw new CustomUserMessageAuthenticationException('You do not have the permission to log in.');
+        }
+
         return $user;
     }
 
