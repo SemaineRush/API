@@ -44,7 +44,8 @@ class AppFixtures extends Fixture
                 $candidate=new Candidate;
                 $candidate->setInfos($faker->text)
                           ->setStylesheet("body{text-align:center}")
-                          ->setUserRelated($user);
+                          ->setUserRelated($user)
+                          ->setNbVotes(0);
                           $candidates[]=$candidate;
                           $manager->persist($candidate);
             }else{
@@ -57,6 +58,7 @@ class AppFixtures extends Fixture
                     ->setLocalisation("Paris")
                     ->setName("election BDE");
                     $manager->persist($election);
+                    $elections[]=$election;
 
         }
         foreach ($elections as $election){
@@ -69,9 +71,6 @@ class AppFixtures extends Fixture
             $election->addCandidateElection($firstCandidate);
             $election->addCandidateElection($secondCandidate);
         }
-
-
-
         $manager->flush();
     }
 }
