@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Election;
-use App\Entity\Elections;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
