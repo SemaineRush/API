@@ -45,6 +45,11 @@ class Candidate
      */
     private $userRelated;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nb_votes;
+
 
 
     public function __construct()
@@ -119,6 +124,18 @@ class Candidate
     public function setUserRelated(?User $userRelated): self
     {
         $this->userRelated = $userRelated;
+
+        return $this;
+    }
+
+    public function getNbVotes(): ?int
+    {
+        return $this->nb_votes;
+    }
+
+    public function setNbVotes(?int $nb_votes): self
+    {
+        $this->nb_votes = $nb_votes;
 
         return $this;
     }
