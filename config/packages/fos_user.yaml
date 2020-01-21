@@ -1,10 +1,10 @@
 fos_user:
-    registration:
-        confirmation:
-            enabled: true
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: main
+    user_class: UserBundle\Entity\User
 
     from_email:
-        address:        alice.bonnet@supinternet.fr
+        address: "samuel.simonney@gmail.com"
         sender_name:    Sup'Internet Vote App
 
     service:
