@@ -51,25 +51,35 @@ class AppFixtures extends Fixture
                 $votants[] = $user;
             }
 
-            $election=new Election;
+            $election = new Election;
             $election->setEndduration($faker->dateTimeBetween("-1 months"))
-                    ->setStart($faker->dateTimeBetween("-2 months"))
-                    ->setLocalisation("Paris")
-                    ->setName("election BDE");
-                    $manager->persist($election);
-                    $elections[]=$election;
-
+                ->setStart($faker->dateTimeBetween("-2 months"))
+                ->setLocalisation("Paris")
+                ->setName("election BDE");
+            $manager->persist($election);
+            $elections[] = $election;
         }
-        foreach ($elections as $election){
-            $firstVotant = $votants[mt_rand(0,3)];
-            $secondVotant = $votants[mt_rand(3,6)];
-            $firstCandidate=$candidates[mt_rand(0,1)];
-            $secondCandidate=$candidates[2];
+        foreach ($elections as $election) {
+            $firstVotant = $votants[mt_rand(0, 3)];
+            $secondVotant = $votants[mt_rand(3, 6)];
+            $firstCandidate = $candidates[mt_rand(0, 1)];
+            $secondCandidate = $candidates[2];
             $election->addUser($firstVotant);
             $election->addUser($secondVotant);
             $election->addCandidateElection($firstCandidate);
             $election->addCandidateElection($secondCandidate);
         }
+        $manager->flush();
+        $user = new User();
+        $plainPassword = 'motdepas';
+        $encoded = $this->encoder->encodePassword($user, $plainPassword);
+        $user
+            ->setEmail('sam@sam.fr')
+            ->setUsername('admin')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setPassword($encoded);
+
+        $manager->persist($user);
         $manager->flush();
     }
 }
