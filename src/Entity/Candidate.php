@@ -16,11 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     "groups"={"candidates_read"}
  *  },
  *      collectionOperations={"get"},
- *      itemOperations={"get","increment"={
- *          "method"="post", 
- *          "path"="/candidate/{id}/increment",
- *          "controller"="App\Controller\VoteIncrementationController",
- * }}
+ *      itemOperations={"get"}
  * )
  * 
  */
