@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
- * @Table(name="election")
+ * @ORM\Table(name="election")
  * @ApiResource(
  *      collectionOperations={"get"},
  *      itemOperations={"get"}

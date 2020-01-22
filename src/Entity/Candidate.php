@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Table;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CandidateRepository")
- * @Table(name="candidate")
+ * @ORM\Table(name="candidate")
  * @ApiResource(
  *      collectionOperations={"get"},
  *      itemOperations={"get"}
