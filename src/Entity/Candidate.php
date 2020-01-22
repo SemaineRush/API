@@ -143,7 +143,7 @@ class Candidate
 
     public function __toString()
     {
-        return $this->userRelated->getUsername() . ' ' . $this->userRelated->getEmail();
+        return $this->userRelated->getEmail();
     }
 
     public function getNbVotes(): ?int
