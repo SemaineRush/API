@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -19,8 +20,20 @@ class User extends BaseUser
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"candidates_read"})
      */
     protected $id;
+
+    /**
+     * @var string
+     * @Groups({"candidates_read"})
+     */
+    protected $username;
+    /**
+     * @var string
+     *  @Groups({"candidates_read"})
+     */
+    protected $email;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated")
