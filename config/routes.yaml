@@ -5,3 +5,7 @@ api_login_check:
     path: /api/login_check
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+fos_user_registration_register:
+    path:      api/auth/register
+    defaults:  { _controller: FOSUserBundle:Registration:register }
