@@ -5,14 +5,24 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CandidateRepository")
  * @ApiResource(
+ * normalizationContext={
+ *     "groups"={"candidates_read"}
+ *  },
  *      collectionOperations={"get"},
- *      itemOperations={"get"}
+ *      itemOperations={"get","increment"={
+ *          "method"="post", 
+ *          "path"="/candidate/{id}/increment",
+ *          "controller"="App\Controller\VoteIncrementationController",
+ * }}
  * )
+ * 
  */
 class Candidate
 {
@@ -20,6 +30,7 @@ class Candidate
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"candidates_read","election_read"})
      */
     private $id;
 
@@ -27,26 +38,31 @@ class Candidate
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"candidates_read","election_read"})
      */
     private $stylesheet;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"candidates_read","election_read"})
      */
     private $infos;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Election", mappedBy="candidateElection")
+     * @Groups({"candidates_read"})
      */
     private $elections;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidates")
+     * @Groups({"candidates_read","election_read"})
      */
     private $userRelated;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"candidates_read","election_read"})
      */
     private $nb_votes;
 
@@ -61,8 +77,6 @@ class Candidate
     {
         return $this->id;
     }
-
-
 
     public function getStylesheet(): ?string
     {

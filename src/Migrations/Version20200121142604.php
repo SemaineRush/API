@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200121140454 extends AbstractMigration
+final class Version20200121142604 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -28,6 +28,7 @@ final class Version20200121140454 extends AbstractMigration
         $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649A708DAFF');
         $this->addSql('DROP INDEX IDX_8D93D649A708DAFF ON user');
         $this->addSql('ALTER TABLE user DROP election_id');
+        $this->addSql('ALTER TABLE candidate ADD nb_votes INT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -36,6 +37,7 @@ final class Version20200121140454 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('DROP TABLE election_user');
+        $this->addSql('ALTER TABLE candidate DROP nb_votes');
         $this->addSql('ALTER TABLE user ADD election_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649A708DAFF FOREIGN KEY (election_id) REFERENCES election (id)');
         $this->addSql('CREATE INDEX IDX_8D93D649A708DAFF ON user (election_id)');
