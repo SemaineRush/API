@@ -16,11 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     "groups"={"candidates_read"}
  *  },
  *      collectionOperations={"get"},
- *      itemOperations={"get","increment"={
- *          "method"="post", 
- *          "path"="/candidate/{id}/increment",
- *          "controller"="App\Controller\VoteIncrementationController",
- * }}
+ *      itemOperations={"get"}
  * )
  * 
  */
@@ -140,6 +136,12 @@ class Candidate
         $this->userRelated = $userRelated;
 
         return $this;
+    }
+
+
+    public function __toString()
+    {
+        return $this->userRelated->getFirstname() . ' ' . $this->userRelated->getLastname();
     }
 
     public function getNbVotes(): ?int

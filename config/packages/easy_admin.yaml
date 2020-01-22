@@ -1,0 +1,16 @@
+easy_admin:
+   site_name: "SUP'Votes"
+   entities:
+       Election:
+         class: App\Entity\Election
+       Cadidate:
+         class: App\Entity\Candidate
+       User:
+         class: App\Entity\User
+         form:
+            fields:
+               - { property: 'firstname' }
+               - { property: 'lastname' }
+               - { property: 'email' }
+               - { property: 'password' }
+               - { property: 'roles', type: 'choice', type_options: { expanded: true, multiple: true, choices: { 'ROLE_USER': 'Normal user', 'ROLE_ADMIN': 'Administrator' } } }

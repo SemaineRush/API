@@ -2,19 +2,26 @@
 
 namespace App\Controller;
 
-use App\Entity\Candidate;
-use Doctrine\Common\Persistence\ObjectManager;
+use App\Repository\CandidateRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
-class VoteIncrementationController{
-
-
+class VoteIncrementationController extends AbstractController {
     
-    public function __invoke(Candidate $data,ObjectManager $om)
+    /**
+     * @Route("/vote/{id}", name="vote", methods={"POST"})
+     */
+    public function vote(int $id, CandidateRepository $candidate)
     {
-        die($data);
-    //     $data->setNbVotes($data->getNbVotes()+1);
-    //     $om->flush();
-    //    return($data);
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $candidate->findById($id);
+        $user->getNbVotes() + 1;
+
+        $em->persist($user);
+        $em->flush();
+
+        return new $this->json(['status' => '201', 'response' => 'Merci d\'avoir voté']);
     }
-     
+ 
 }
