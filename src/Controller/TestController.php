@@ -19,3 +19,4 @@ class TestController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
     }
+}
