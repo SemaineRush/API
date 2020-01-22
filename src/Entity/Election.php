@@ -6,10 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
  * @ApiResource(
+ * normalizationContext={
+ *     "groups"={"election_read"}
+ *  },
  *      collectionOperations={"get"},
  *      itemOperations={"get"}
  * )
@@ -20,36 +25,43 @@ class Election
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"candidates_read","election_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"candidates_read","election_read"})
      */
     private $start;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"candidates_read","election_read"})
      */
     private $end;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"candidates_read","election_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"candidates_read","election_read"})
      */
     private $localisation;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Candidate", inversedBy="elections")
+     * @Groups({"election_read"})
      */
     private $candidateElection;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="elections")
+     * @Groups({"election_read"})
      */
     private $voter;
 
