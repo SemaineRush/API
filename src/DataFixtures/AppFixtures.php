@@ -24,31 +24,31 @@ class AppFixtures extends Fixture
     {
         $this->encoder = $encoder;
     }
-    
+
     public function load(ObjectManager $manager)
     {
-        
-        $faker=Factory::create("fr_FR");
-        $votants=[];
-        $elections=[];
-        $candidates=[];
-        for ($i=0; $i < 10; $i++) { 
-            $user=new User;
+
+        $faker = Factory::create("fr_FR");
+        $votants = [];
+        $elections = [];
+        $candidates = [];
+        for ($i = 0; $i < 10; $i++) {
+            $user = new User;
             $hash = $this->encoder->encodePassword($user, "password");
             $user->setUsername($faker->firstName())
                 ->setEmail($faker->email)
                 ->setPassword($hash);
-                $manager->persist($user);
-            if($i<3){
-                $candidate=new Candidate;
+            $manager->persist($user);
+            if ($i < 3) {
+                $candidate = new Candidate;
                 $candidate->setInfos($faker->text)
-                          ->setStylesheet("body{text-align:center}")
-                          ->setUserRelated($user)
-                          ->setNbVotes(0);
-                          $candidates[]=$candidate;
-                          $manager->persist($candidate);
-            }else{
-                $votants[]=$user;
+                    ->setStylesheet("body{text-align:center}")
+                    ->setUserRelated($user)
+                    ->setNbVotes(0);
+                $candidates[] = $candidate;
+                $manager->persist($candidate);
+            } else {
+                $votants[] = $user;
             }
 
             $election=new Election;
