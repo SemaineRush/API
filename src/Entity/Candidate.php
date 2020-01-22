@@ -138,6 +138,12 @@ class Candidate
         return $this;
     }
 
+
+    public function __toString()
+    {
+        return $this->userRelated->getFirstname() . ' ' . $this->userRelated->getLastname();
+    }
+
     public function getNbVotes(): ?int
     {
         return $this->nb_votes;
