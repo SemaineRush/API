@@ -52,11 +52,6 @@ class Candidate
      */
     private $elections;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidates")
-     * @Groups({"candidates_read","election_read"})
-     */
-    private $userRelated;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -64,11 +59,20 @@ class Candidate
      */
     private $nb_votes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidate")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $userRelated;
+
+   
+
 
 
     public function __construct()
     {
         $this->elections = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -128,18 +132,6 @@ class Candidate
         return $this;
     }
 
-    public function getUserRelated(): ?User
-    {
-        return $this->userRelated;
-    }
-
-    public function setUserRelated(?User $userRelated): self
-    {
-        $this->userRelated = $userRelated;
-
-        return $this;
-    }
-
 
     public function __toString()
     {
@@ -157,4 +149,17 @@ class Candidate
 
         return $this;
     }
+
+    public function getUserRelated(): ?User
+    {
+        return $this->userRelated;
+    }
+
+    public function setUserRelated(?User $userRelated): self
+    {
+        $this->userRelated = $userRelated;
+
+        return $this;
+    }
+
 }

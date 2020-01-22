@@ -61,17 +61,17 @@ class Election
     private $candidateElection;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="elections")
-     * @Groups({"election_read"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="election")
      */
-    private $voter;
+    private $users;
+
 
 
 
     public function __construct()
     {
-        $this->voter = new ArrayCollection();
         $this->candidateElection = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,34 +154,37 @@ class Election
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getVoter(): Collection
-    {
-        return $this->voter;
-    }
-
-    public function addVoter(User $voter): self
-    {
-        if (!$this->voter->contains($voter)) {
-            $this->voter[] = $voter;
-        }
-
-        return $this;
-    }
-
-    public function removeVoter(User $voter): self
-    {
-        if ($this->voter->contains($voter)) {
-            $this->voter->removeElement($voter);
-        }
-
-        return $this;
-    }
 
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addElection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeElection($this);
+        }
+
+        return $this;
     }
 }

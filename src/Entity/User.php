@@ -30,13 +30,15 @@ class User implements UserInterface
 
     /**
      * @var string
+     * @ORM\Column(type="string")
      * @Groups({"candidates_read","user"})
      */
     private $username;
 
     /**
      * @var string
-     *  @Groups({"candidates_read","user"})
+     * @ORM\Column(type="string")
+     * @Groups({"candidates_read","user"})
      */
     private $email;
 
@@ -51,44 +53,23 @@ class User implements UserInterface
      */
     private $password;
 
+
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated")
-     *  @Groups({"user"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Election", inversedBy="users")
      */
     private $election;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Election", mappedBy="voter")
-     *  @Groups({"user"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated", orphanRemoval=true)
      */
-    private $candidates;
-
+    private $candidate;
 
     public function __construct()
     {
-        $this->candidates = new ArrayCollection();
-        $this->elections = new ArrayCollection();
+        $this->election = new ArrayCollection();
+        $this->candidate = new ArrayCollection();
     }
 
-    public function getElection(): ?Election
-    {
-        return $this->election;
-    }
-
-    public function setElection(?Election $election): self
-    {
-        $this->election = $election;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Candidate[]
-     */
-    public function getCandidates(): Collection
-    {
-        return $this->candidates;
-    }
     /**
      * @see UserInterface
      */
@@ -104,28 +85,7 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-    public function addCandidate(Candidate $candidate): self
-    {
-        if (!$this->candidates->contains($candidate)) {
-            $this->candidates[] = $candidate;
-            $candidate->setUserRelated($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCandidate(Candidate $candidate): self
-    {
-        if ($this->candidates->contains($candidate)) {
-            $this->candidates->removeElement($candidate);
-            // set the owning side to null (unless already changed)
-            if ($candidate->getUserRelated() === $this) {
-                $candidate->setUserRelated(null);
-            }
-        }
-
-        return $this;
-    }
+    
 
     public function __toString()
     {
@@ -140,25 +100,6 @@ class User implements UserInterface
         return $this->elections;
     }
 
-    public function addElection(Election $election): self
-    {
-        if (!$this->elections->contains($election)) {
-            $this->elections[] = $election;
-            $election->addVoter($this);
-        }
-
-        return $this;
-    }
-
-    public function removeElection(Election $election): self
-    {
-        if ($this->elections->contains($election)) {
-            $this->elections->removeElement($election);
-            $election->removeVoter($this);
-        }
-
-        return $this;
-    }
 
     /**
      * Get the value of roles
@@ -231,7 +172,7 @@ class User implements UserInterface
      */
     public function getUsername()
     {
-        return $this->username;
+        return $this->email;
     }
 
     /**
@@ -244,6 +185,89 @@ class User implements UserInterface
     public function setUsername(string $username)
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of email
+     *
+     * @return  string
+     */ 
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set the value of email
+     *
+     * @param  string  $email
+     *
+     * @return  self
+     */ 
+    public function setEmail(string $email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    
+
+    /**
+     * @return Collection|Election[]
+     */
+    public function getElection(): Collection
+    {
+        return $this->election;
+    }
+
+    public function addElection(Election $election): self
+    {
+        if (!$this->election->contains($election)) {
+            $this->election[] = $election;
+        }
+
+        return $this;
+    }
+
+    public function removeElection(Election $election): self
+    {
+        if ($this->election->contains($election)) {
+            $this->election->removeElement($election);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Candidate[]
+     */
+    public function getCandidate(): Collection
+    {
+        return $this->candidate;
+    }
+
+    public function addCandidate(Candidate $candidate): self
+    {
+        if (!$this->candidate->contains($candidate)) {
+            $this->candidate[] = $candidate;
+            $candidate->setUserRelated($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidate(Candidate $candidate): self
+    {
+        if ($this->candidate->contains($candidate)) {
+            $this->candidate->removeElement($candidate);
+            // set the owning side to null (unless already changed)
+            if ($candidate->getUserRelated() === $this) {
+                $candidate->setUserRelated(null);
+            }
+        }
 
         return $this;
     }

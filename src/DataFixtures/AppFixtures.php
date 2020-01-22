@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
             }
 
             $election=new Election;
-            $election->setEnd($faker->dateTimeBetween("-1 months"))
+            $election->setEndduration($faker->dateTimeBetween("-1 months"))
                     ->setStart($faker->dateTimeBetween("-2 months"))
                     ->setLocalisation("Paris")
                     ->setName("election BDE");
@@ -65,8 +65,8 @@ class AppFixtures extends Fixture
             $secondVotant = $votants[mt_rand(3,6)];
             $firstCandidate=$candidates[mt_rand(0,1)];
             $secondCandidate=$candidates[2];
-            $election->addVoter($firstVotant);
-            $election->addVoter($secondVotant);
+            $election->addUser($firstVotant);
+            $election->addUser($secondVotant);
             $election->addCandidateElection($firstCandidate);
             $election->addCandidateElection($secondCandidate);
         }
