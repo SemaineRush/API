@@ -5,3 +5,4 @@ php bin/console d:s:u --force
 mkdir -p config/jwt
 openssl genrsa -out config/jwt/private.pem 4096
 openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+php bin/console doctrine:fixtures:load
