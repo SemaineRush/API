@@ -35,8 +35,7 @@ class AppFixtures extends Fixture
         for ($i=0; $i < 10; $i++) { 
             $user=new User;
             $hash = $this->encoder->encodePassword($user, "password");
-            $user->setFirstname($faker->firstName())
-                ->setLastname($faker->lastName)
+            $user->setUsername($faker->firstName())
                 ->setEmail($faker->email)
                 ->setPassword($hash);
                 $manager->persist($user);
@@ -53,7 +52,7 @@ class AppFixtures extends Fixture
             }
 
             $election=new Election;
-            $election->setEnd($faker->dateTimeBetween("-6 months"))
+            $election->setEnd($faker->dateTimeBetween("-1 months"))
                     ->setStart($faker->dateTimeBetween("-2 months"))
                     ->setLocalisation("Paris")
                     ->setName("election BDE");
@@ -63,7 +62,7 @@ class AppFixtures extends Fixture
         }
         foreach ($elections as $election){
             $firstVotant = $votants[mt_rand(0,3)];
-            $secondVotant = $votants[mt_rand(3,7)];
+            $secondVotant = $votants[mt_rand(3,6)];
             $firstCandidate=$candidates[mt_rand(0,1)];
             $secondCandidate=$candidates[2];
             $election->addVoter($firstVotant);
