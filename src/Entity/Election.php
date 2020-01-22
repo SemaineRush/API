@@ -6,10 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
  * @ApiResource(
+ * normalizationContext={
+ *     "groups"={"election_read"}
+ *  },
  *      collectionOperations={"get"},
  *      itemOperations={"get"}
  * )
@@ -20,38 +25,45 @@ class Election
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"candidates_read","election_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"candidates_read","election_read"})
      */
     private $start;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"candidates_read","election_read"})
      */
     private $end;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"candidates_read","election_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"candidates_read","election_read"})
      */
     private $localisation;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="election")
-     */
-    private $voter;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Candidate", inversedBy="elections")
+     * @Groups({"election_read"})
      */
     private $candidateElection;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="elections")
+     * @Groups({"election_read"})
+     */
+    private $voter;
 
 
 
@@ -114,36 +126,6 @@ class Election
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getVoter(): Collection
-    {
-        return $this->voter;
-    }
-
-    public function addVoter(User $voter): self
-    {
-        if (!$this->voter->contains($voter)) {
-            $this->voter[] = $voter;
-            $voter->setElection($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVoter(User $voter): self
-    {
-        if ($this->voter->contains($voter)) {
-            $this->voter->removeElement($voter);
-            // set the owning side to null (unless already changed)
-            if ($voter->getElection() === $this) {
-                $voter->setElection(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Candidate[]
@@ -166,6 +148,32 @@ class Election
     {
         if ($this->candidateElection->contains($candidateElection)) {
             $this->candidateElection->removeElement($candidateElection);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getVoter(): Collection
+    {
+        return $this->voter;
+    }
+
+    public function addVoter(User $voter): self
+    {
+        if (!$this->voter->contains($voter)) {
+            $this->voter[] = $voter;
+        }
+
+        return $this;
+    }
+
+    public function removeVoter(User $voter): self
+    {
+        if ($this->voter->contains($voter)) {
+            $this->voter->removeElement($voter);
         }
 
         return $this;
