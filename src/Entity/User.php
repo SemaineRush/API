@@ -44,6 +44,21 @@ class User extends BaseUser
      */
     protected $candidates;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fitstname;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $firstname;
+
 
     public function __construct()
     {
@@ -123,6 +138,42 @@ class User extends BaseUser
             $this->elections->removeElement($election);
             $election->removeVoter($this);
         }
+
+        return $this;
+    }
+
+    public function getFitstname(): ?string
+    {
+        return $this->fitstname;
+    }
+
+    public function setFitstname(string $fitstname): self
+    {
+        $this->fitstname = $fitstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
 
         return $this;
     }
