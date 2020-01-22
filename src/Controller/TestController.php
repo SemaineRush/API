@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CandidateRepository;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,11 +20,11 @@ class TestController extends AbstractController
     /**
      * @Route("/", name="message_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(CandidateRepository $testsam): Response
     {
 
         $entityManager = $this->getDoctrine()->getManager();
-        var_dump($entityManager);
+        var_dump($testsam->findAll());
         return $this->render('email/base.html.twig', []);
     }
 }
