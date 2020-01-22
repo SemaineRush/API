@@ -6,9 +6,11 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Schema\Table;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CandidateRepository")
+ * @Table(name="candidate")
  * @ApiResource(
  *      collectionOperations={"get"},
  *      itemOperations={"get"}

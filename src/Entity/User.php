@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @Table(name="user")
  * @ApiResource
  */
 class User extends BaseUser
