@@ -40,7 +40,7 @@ class Election
      * @ORM\Column(type="datetime")
      * @Groups({"candidates_read","election_read"})
      */
-    private $end;
+    private $endduration;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -91,14 +91,14 @@ class Election
         return $this;
     }
 
-    public function getEnd(): ?\DateTimeInterface
+    public function getEndduration(): ?\DateTimeInterface
     {
-        return $this->end;
+        return $this->endduration;
     }
 
-    public function setEnd(\DateTimeInterface $end): self
+    public function setEndduration(\DateTimeInterface $endduration): self
     {
-        $this->end = $end;
+        $this->endduration = $endduration;
 
         return $this;
     }
