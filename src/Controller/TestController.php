@@ -21,6 +21,8 @@ class TestController extends AbstractController
      */
     public function index(): Response
     {
+        $logger = $this->get('logger');
+        $logger->info($this->getDoctrine()->getManager());
         $entityManager = $this->getDoctrine()->getManager();
         var_dump($entityManager);
         die;
