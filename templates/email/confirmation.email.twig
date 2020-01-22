@@ -1,0 +1,16 @@
+{% block subject %}Confirmez votre adresse e-mail{% endblock %}
+
+{% block body_text %}
+{% autoescape false %}
+Bonjour {{ user.username }} !
+
+Pour valider votre compte, cliquez sur ce lien : {{ confirmationUrl }}
+
+Bien cordialement,
+L'équipe développement
+{% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+{# {% include 'email/password_resetting.html.twig' %} #}
+{% endblock %}

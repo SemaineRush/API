@@ -1,7 +1,24 @@
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
     firewall_name: main
-    user_class: UserBundle\Entity\User
+    user_class: App\Entity\User
+
     from_email:
         address: "samuel.simonney@gmail.com"
-        sender_name: "samuel.simonney@gmail.com"
+        sender_name:    Sup'Internet Vote App
+
+    service:
+        mailer: fos_user.mailer.twig_swift
+    resetting:
+        email:
+            template:   email/password_resetting.email.twig
+            from_email:
+                address: "semainerush.supagency@gmail.com"
+                sender_name:    Sup'Agency
+    registration:
+        confirmation:
+            template:   email/confirmation.email.twig
+            enabled: true
+            from_email:
+                address: "semainerush.supagency@gmail.com"
+                sender_name:    Sup'Agency
