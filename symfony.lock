@@ -16,6 +16,9 @@
             "src/Entity/.gitignore"
         ]
     },
+    "boldtrn/jsonb-bundle": {
+        "version": "v1.2.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
