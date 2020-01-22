@@ -8,9 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Schema\Table;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CandidateRepository")
+ * @ORM\Table(name="candidate")
  * @ApiResource(
  * normalizationContext={
  *     "groups"={"candidates_read"}

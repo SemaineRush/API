@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
+ * @ORM\Table(name="election")
  * @ApiResource(
  * normalizationContext={
  *     "groups"={"election_read"}
