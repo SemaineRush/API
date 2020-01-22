@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @Table(name="user")
+ * @Table(name="character")
  * @ApiResource
  */
 class User extends BaseUser
@@ -46,15 +46,7 @@ class User extends BaseUser
      */
     protected $candidates;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastname;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $firstname;
 
 
     public function __construct()
@@ -108,7 +100,7 @@ class User extends BaseUser
 
     public function __toString()
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->username . ' ' . $this->email;
     }
 
     /**
@@ -135,30 +127,6 @@ class User extends BaseUser
             $this->elections->removeElement($election);
             $election->removeVoter($this);
         }
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(string $firstname): self
-    {
-        $this->firstname = $firstname;
 
         return $this;
     }
