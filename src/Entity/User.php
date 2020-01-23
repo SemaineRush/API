@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @Table(name="character")
- * * @ApiResource(
+ * @ApiResource(
  *     normalizationContext={"groups"={"user_read"}},
  * )
  */
@@ -27,7 +27,6 @@ class User implements UserInterface
      */
     private $id;
 
-    
     /**
      * @var string
      * @ORM\Column(type="string")
@@ -45,7 +44,6 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Election", inversedBy="users")
@@ -87,7 +85,6 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
     
-
     public function __toString()
     {
         return $this->email;
@@ -157,7 +154,7 @@ class User implements UserInterface
         return $this;
     }
 
-     /**
+    /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
@@ -192,8 +189,6 @@ class User implements UserInterface
 
         return $this;
     }
-
-    
 
     /**
      * @return Collection|Election[]
