@@ -64,6 +64,16 @@ class User implements UserInterface
      */
     private $candidate;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_enable;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $token;
+
     public function __construct()
     {
         $this->election = new ArrayCollection();
@@ -268,6 +278,30 @@ class User implements UserInterface
                 $candidate->setUserRelated(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsEnable(): ?bool
+    {
+        return $this->is_enable;
+    }
+
+    public function setIsEnable(?bool $is_enable): self
+    {
+        $this->is_enable = $is_enable;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }
