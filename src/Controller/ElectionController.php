@@ -36,6 +36,7 @@ class ElectionController extends AbstractController
         {
             $candidateScore = count($candidate->getScores());
 
+            $candidatePercentage = null;
             if ($scores != 0)
             {
                 $candidatePercentage = ($candidateScore / $scores) * 100;
