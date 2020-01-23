@@ -25,7 +25,7 @@ class ElectionController extends AbstractController
         $orderedCandidates = [];
         foreach ($candidates as $candidate) 
         {
-            $orderedCandidates[$candidate->getUserRelated()->getUsername()] = $candidate->getScore();
+            $orderedCandidates[$candidate->getUserRelated()->getUsername()] = count($candidate->getScores());
         }
         
         $lastElection['id'] = $election->getId();
@@ -45,9 +45,6 @@ class ElectionController extends AbstractController
         $lastElection['start'] = $election->getStart();
         $lastElection['end'] = $election->getEndduration();
         $lastElection['localisation'] = $election->getLocalisation();
-        
-        
-        
 
         return new JsonResponse(['response' => [
             'last_election' => $lastElection,
