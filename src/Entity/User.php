@@ -257,7 +257,6 @@ class User implements UserInterface
         return $this;
     }
 
-<<<<<<< HEAD
     public function getIsEnable(): ?bool
     {
         return $this->is_enable;
@@ -278,7 +277,8 @@ class User implements UserInterface
     public function setToken(?string $token): self
     {
         $this->token = $token;
-=======
+    }
+    
     public function getName(): ?string
     {
         return $this->name;
@@ -287,7 +287,6 @@ class User implements UserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
->>>>>>> 79c27f9e808c10c7fee15ad4b4e3edd0ac54ded6
 
         return $this;
     }

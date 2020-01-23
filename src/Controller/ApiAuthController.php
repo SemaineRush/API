@@ -50,7 +50,6 @@ class ApiAuthController extends AbstractController
         $token = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 20);;
 
         $encoded = $this->encoder->encodePassword($user, $password);
-<<<<<<< HEAD
         $user->setUsername($username)
             ->setPassword($encoded)
             ->setEmail($email)
@@ -58,15 +57,6 @@ class ApiAuthController extends AbstractController
             ->setIsEnable(0)
             ->setToken($token);
         try {
-=======
-        $user->setName($username)
-             ->setPassword($encoded)
-             ->setEmail($email)
-             ->setRoles(['ROLE_USER']);
-
-        try 
-        {
->>>>>>> 79c27f9e808c10c7fee15ad4b4e3edd0ac54ded6
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -75,7 +65,6 @@ class ApiAuthController extends AbstractController
         {
             return new JsonResponse(["error" => $e->getMessage()], 500);
         }
-<<<<<<< HEAD
 
         $link = "https://testsamheroku.herokuapp.com/auth/confirmation/{$user->getId()}/{$user->getToken()}";
 
@@ -94,13 +83,9 @@ class ApiAuthController extends AbstractController
         $mailer->send($message);
 
 
-=======
-        
->>>>>>> 79c27f9e808c10c7fee15ad4b4e3edd0ac54ded6
         return new JsonResponse(["success" => $user->getUsername() . " has been registered!"], 200);
     }
 
-<<<<<<< HEAD
     /**
      * @Route("/auth/confirmation/{id}/{token}", methods={"GET"}, name="confirmation")
      */
@@ -125,14 +110,11 @@ class ApiAuthController extends AbstractController
         }
         
      }
-=======
->>>>>>> 79c27f9e808c10c7fee15ad4b4e3edd0ac54ded6
     /**
      * @Route(path="api/auth/reset", methods={"POST"}, name="api_auth_reset")
      */
     public function resetPassword(Request $request, \Swift_Mailer $mailer)
     {
-<<<<<<< HEAD
         $data = json_decode(
             $request->getContent(),
             true
@@ -165,28 +147,5 @@ class ApiAuthController extends AbstractController
         }else {
             return $this->json(["lol" => 'haha']);
         }
-        // return new JsonResponse($user, 200);
-=======
-        $data = json_decode($request->getContent(), true);
-
-        $validator = Validation::createValidator();
-        $constraint = new Assert\Collection(array(
-            // the keys correspond to the keys in the input array
-            'oldpassword' => new Assert\Length(array('min' => 1)),
-            'newpassword' => new Assert\Length(array('min' => 1)),
-            'newpasswordverif' => new Assert\Length(array('min' => 1)),
-        ));
-
-        $violations = $validator->validate($data, $constraint);
-        
-        if ($violations->count() > 0) 
-        {
-            return new JsonResponse(["error" => (string) $violations], 500);
-        }
-        
-        $password = $data['newpassword'];
-        
-        return new JsonResponse($password, 200);
->>>>>>> 79c27f9e808c10c7fee15ad4b4e3edd0ac54ded6
     }
 }
