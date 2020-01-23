@@ -43,8 +43,7 @@ class AppFixtures extends Fixture
                 $candidate = new Candidate;
                 $candidate->setInformations(["lkfd,b"=>"mle;gml"])
                     ->setStylesheet("body{text-align:center}")
-                    ->setUserRelated($user)
-                    ->setScore(0);
+                    ->setUserRelated($user);
                 $candidates[] = $candidate;
                 $manager->persist($candidate);
             } else {

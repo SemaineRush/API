@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Score;
 use App\Repository\CandidateRepository;
 use App\Repository\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +14,7 @@ class VoteIncrementationController extends AbstractController {
     /**
      * @Route("/api/vote/{electionId}/{cadidateId}", name="vote", methods={"POST"})
      */
-    public function vote(int $electionId, int $cadidateId, CandidateRepository $candidate, ElectionRepository $election)
+    public function score(int $electionId, int $cadidateId, CandidateRepository $candidate, ElectionRepository $election)
     {
         $em = $this->getDoctrine()->getManager();
         
@@ -35,8 +36,10 @@ class VoteIncrementationController extends AbstractController {
         $em->persist($election);
 
         $candidate = $candidate->findOneById($cadidateId);
-        $candidate->setScore($candidate->getScore() + 1);
-        $em->persist($candidate);
+        $vote = new Score;
+        $vote->addCandidate($candidate);
+        
+        $em->persist($vote);
         
         $em->flush();
 
