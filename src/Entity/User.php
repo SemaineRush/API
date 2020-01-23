@@ -90,7 +90,7 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return $this->username . ' ' . $this->email;
+        return $this->email;
     }
 
     /**
