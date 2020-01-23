@@ -17,9 +17,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("email")
  * @Table(name="character")
- * * @ApiResource(
- *     normalizationContext={"groups"={"user", "user:read"}},
- *     denormalizationContext={"groups"={"user", "user:write"}}
+ * @ApiResource(
+ *     normalizationContext={"groups"={"user_read"}},
  * )
  */
 class User implements UserInterface
@@ -28,16 +27,9 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"candidates_read","user"})
+     * @Groups({"user_read"})
      */
     private $id;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     * @Groups({"candidates_read","user"})
-     */
-    private $username;
 
     /**
      * @var string
@@ -57,16 +49,33 @@ class User implements UserInterface
      */
     private $password;
 
-
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Election", inversedBy="users")
+     * @Groups({"user_read"})
      */
     private $election;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated", orphanRemoval=true)
+     * @Groups({"user_read"})
      */
     private $candidate;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_enable;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $token;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user_read"})
+     */
+    private $name;
 
     public function __construct()
     {
@@ -90,10 +99,9 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-
     public function __toString()
     {
-        return $this->username . ' ' . $this->email;
+        return $this->email;
     }
 
     /**
@@ -161,28 +169,16 @@ class User implements UserInterface
     }
 
     /**
-     * Get the value of username
+     * A visual identifier that represents this user.
      *
-     * @return  string
+     * @see UserInterface
      */
-    public function getUsername()
+    public function getUsername(): string
     {
-        return $this->email;
+        return (string) $this->email;
     }
 
-    /**
-     * Set the value of username
-     *
-     * @param  string  $username
-     *
-     * @return  self
-     */
-    public function setUsername(string $username)
-    {
-        $this->username = $username;
 
-        return $this;
-    }
 
     /**
      * Get the value of email
@@ -207,8 +203,6 @@ class User implements UserInterface
 
         return $this;
     }
-
-
 
     /**
      * @return Collection|Election[]
@@ -263,6 +257,40 @@ class User implements UserInterface
                 $candidate->setUserRelated(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsEnable(): ?bool
+    {
+        return $this->is_enable;
+    }
+
+    public function setIsEnable(?bool $is_enable): self
+    {
+        $this->is_enable = $is_enable;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token)
+    {
+        $this->token = $token;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

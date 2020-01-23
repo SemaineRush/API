@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Score;
 use App\Repository\CandidateRepository;
 use App\Repository\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,16 +14,18 @@ class VoteIncrementationController extends AbstractController {
     /**
      * @Route("/api/vote/{electionId}/{cadidateId}", name="vote", methods={"POST"})
      */
-    public function vote(int $electionId, int $cadidateId, CandidateRepository $candidate, ElectionRepository $election)
+    public function score(int $electionId, int $cadidateId, CandidateRepository $candidate, ElectionRepository $election)
     {
         $em = $this->getDoctrine()->getManager();
         
         $user = $this->getCurrentUser(); // current user
         $election = $election->findOneById($electionId);
         $users = $election->getUsers();
+        $candidate = $candidate->findOneById($cadidateId);
 
         $voters = [];
-        foreach($users as $voter) {
+        foreach($users as $voter) 
+        {
             $voters[] = $voter->getEmail();
         }
 
@@ -34,9 +37,9 @@ class VoteIncrementationController extends AbstractController {
         $election->addUser($user);
         $em->persist($election);
 
-        $candidate = $candidate->findOneById($cadidateId);
-        $candidate->getNbVotes() + 1;
-        $em->persist($candidate);
+        $vote = new Score;
+        $vote->setCandidate($candidate);
+        $em->persist($vote);
         
         $em->flush();
 
@@ -45,10 +48,12 @@ class VoteIncrementationController extends AbstractController {
 
     private function getCurrentUser()
     {
-        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) 
+        {
             return;
         }
-        if (!is_object($user = $token->getUser())) {
+        if (!is_object($user = $token->getUser())) 
+        {
             return;
         }
         return $user;
