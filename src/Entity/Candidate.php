@@ -67,13 +67,9 @@ class Candidate
     private $informations = [];
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"candidates_read","election_read"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Score", inversedBy="candidate")
      */
     private $score;
-
-   
-
 
 
     public function __construct()
@@ -158,12 +154,12 @@ class Candidate
         return $this;
     }
 
-    public function getScore(): ?int
+    public function getScore(): ?Score
     {
         return $this->score;
     }
 
-    public function setScore(int $score): self
+    public function setScore(?Score $score): self
     {
         $this->score = $score;
 
