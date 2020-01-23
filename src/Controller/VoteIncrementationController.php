@@ -5,36 +5,42 @@ namespace App\Controller;
 use App\Repository\CandidateRepository;
 use App\Repository\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class VoteIncrementationController extends AbstractController {
     
     /**
-     * @Route("/vote/{electionId}/{cadidateId}", name="vote", methods={"POST"})
+     * @Route("/api/vote/{electionId}/{cadidateId}", name="vote", methods={"POST"})
      */
     public function vote(int $electionId, int $cadidateId, CandidateRepository $candidate, ElectionRepository $election)
     {
         $em = $this->getDoctrine()->getManager();
         
         $user = $this->getCurrentUser(); // current user
-        $election = $election->findById($electionId);
-        $voters = $election->getUsers();
+        $election = $election->findOneById($electionId);
+        $users = $election->getUsers();
 
-        if(in_array($user, $voters)) 
+        $voters = [];
+        foreach($users as $voter) {
+            $voters[] = $voter->getEmail();
+        }
+
+        if(in_array($user->getEmail(), $voters)) 
         {
-            return new $this->json(['status' => '401', 'response' => 'Vous avez déjà voté']);
+            return new JsonResponse(['response' => 'Vous avez déjà voté'], 401);
         }
 
         $election->addUser($user);
         $em->persist($election);
 
-        $candidate = $candidate->findById($cadidateId);
+        $candidate = $candidate->findOneById($cadidateId);
         $candidate->getNbVotes() + 1;
         $em->persist($candidate);
         
         $em->flush();
 
-        return new $this->json(['status' => '201', 'response' => 'Merci d\'avoir voté']);
+        return new JsonResponse(['response' => 'Merci d\'avoir voté'], 201);
     }
 
     private function getCurrentUser()
