@@ -67,18 +67,15 @@ class Candidate
     private $informations = [];
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"candidates_read","election_read"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Score", mappedBy="candidate")
      */
-    private $score;
-
-   
-
+    private $scores;
 
 
     public function __construct()
     {
         $this->elections = new ArrayCollection();
+        $this->scores = new ArrayCollection();
        
     }
 
@@ -158,16 +155,34 @@ class Candidate
         return $this;
     }
 
-    public function getScore(): ?int
+    /**
+     * @return Collection|Score[]
+     */
+    public function getScores(): Collection
     {
-        return $this->score;
+        return $this->scores;
     }
 
-    public function setScore(int $score): self
+    public function addScore(Score $score): self
     {
-        $this->score = $score;
+        if (!$this->scores->contains($score)) {
+            $this->scores[] = $score;
+            $score->setCandidate($this);
+        }
 
         return $this;
     }
 
+    public function removeScore(Score $score): self
+    {
+        if ($this->scores->contains($score)) {
+            $this->scores->removeElement($score);
+            // set the owning side to null (unless already changed)
+            if ($score->getCandidate() === $this) {
+                $score->setCandidate(null);
+            }
+        }
+
+        return $this;
+    }
 }

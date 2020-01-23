@@ -25,7 +25,7 @@ class ElectionController extends AbstractController
         $orderedCandidates = [];
         foreach ($candidates as $candidate) 
         {
-            $orderedCandidates[$candidate->getUserRelated()->getUsername()] = $candidate->getScore();
+            $orderedCandidates[$candidate->getUserRelated()->getUsername()] = count($candidate->getScores());
         }
         
         $lastElection['id'] = $election->getId();
