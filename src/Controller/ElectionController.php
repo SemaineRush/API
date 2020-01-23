@@ -45,9 +45,6 @@ class ElectionController extends AbstractController
         $lastElection['start'] = $election->getStart();
         $lastElection['end'] = $election->getEndduration();
         $lastElection['localisation'] = $election->getLocalisation();
-        
-        
-        
 
         return new JsonResponse(['response' => [
             'last_election' => $lastElection,
