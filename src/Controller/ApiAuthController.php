@@ -59,7 +59,7 @@ class ApiAuthController extends AbstractController
         } else {
             foreach ($dbEmails as $dbEmail) {
                 $emailStrip = preg_replace("/[0-9]+/", "", $dbEmail);
-                if (in_array($emailStrip, $data['email'])) {
+                if ($emailStrip == $data['email']) {
                     return new JsonResponse(["error" => "2 : An email too similar has already been registered, contact an administrator to get further informations"], 500);
                 }
             }
