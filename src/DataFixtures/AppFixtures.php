@@ -8,6 +8,7 @@ use App\Entity\User;
 use Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
@@ -27,7 +28,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-
         $faker = Factory::create("fr_FR");
         $votants = [];
         $elections = [];
@@ -41,10 +41,10 @@ class AppFixtures extends Fixture
             $manager->persist($user);
             if ($i < 3) {
                 $candidate = new Candidate;
-                $candidate->setInfos($faker->text)
+                $candidate->setInformations(["lkfd,b"=>"mle;gml"])
                     ->setStylesheet("body{text-align:center}")
                     ->setUserRelated($user)
-                    ->setNbVotes(0);
+                    ->setScore(0);
                 $candidates[] = $candidate;
                 $manager->persist($candidate);
             } else {
@@ -75,7 +75,7 @@ class AppFixtures extends Fixture
         $encoded = $this->encoder->encodePassword($user, $plainPassword);
         $user
             ->setEmail('sam@sam.fr')
-            ->setUsername('admin')
+            ->setName('admin')
             ->setRoles(['ROLE_ADMIN'])
             ->setPassword($encoded);
 

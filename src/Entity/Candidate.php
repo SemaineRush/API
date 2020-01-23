@@ -47,12 +47,6 @@ class Candidate
     private $stylesheet;
 
     /**
-     * @ORM\Column(type="text")
-     * @Groups({"candidates_read","election_read"})
-     */
-    private $infos;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Election", mappedBy="candidateElection")
      * @Groups({"candidates_read"})
      */
@@ -60,17 +54,23 @@ class Candidate
 
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"candidates_read","election_read"})
-     */
-    private $nb_votes;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidate")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"candidates_read"})
      */
     private $userRelated;
+
+    /**
+     * @ORM\Column(type="json")
+     * @Groups({"candidates_read","election_read"})
+     */
+    private $informations = [];
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"candidates_read","election_read"})
+     */
+    private $score;
 
    
 
@@ -99,17 +99,6 @@ class Candidate
         return $this;
     }
 
-    public function getInfos(): ?string
-    {
-        return $this->infos;
-    }
-
-    public function setInfos(string $infos): self
-    {
-        $this->infos = $infos;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Election[]
@@ -145,18 +134,6 @@ class Candidate
         return $this->userRelated->getEmail();
     }
 
-    public function getNbVotes(): ?int
-    {
-        return $this->nb_votes;
-    }
-
-    public function setNbVotes(?int $nb_votes): self
-    {
-        $this->nb_votes = $nb_votes;
-
-        return $this;
-    }
-
     public function getUserRelated(): ?User
     {
         return $this->userRelated;
@@ -165,6 +142,30 @@ class Candidate
     public function setUserRelated(?User $userRelated): self
     {
         $this->userRelated = $userRelated;
+
+        return $this;
+    }
+
+    public function getInformations(): ?array
+    {
+        return $this->informations;
+    }
+
+    public function setInformations(array $informations): self
+    {
+        $this->informations = $informations;
+
+        return $this;
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(int $score): self
+    {
+        $this->score = $score;
 
         return $this;
     }
