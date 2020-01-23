@@ -68,9 +68,9 @@ class User implements UserInterface
     private $token;
 
     /**
-    * @ORM\Column(type="string", length=255)
-    * @Groups({"user_read"})
-    */
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user_read"})
+     */
     private $name;
 
     public function __construct()
@@ -94,7 +94,7 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-    
+
     public function __toString()
     {
         return $this->email;
@@ -180,7 +180,7 @@ class User implements UserInterface
      * Get the value of email
      *
      * @return  string
-     */ 
+     */
     public function getEmail()
     {
         return $this->email;
@@ -192,7 +192,7 @@ class User implements UserInterface
      * @param  string  $email
      *
      * @return  self
-     */ 
+     */
     public function setEmail(string $email)
     {
         $this->email = $email;
@@ -274,11 +274,11 @@ class User implements UserInterface
         return $this->token;
     }
 
-    public function setToken(?string $token): self
+    public function setToken(?string $token)
     {
         $this->token = $token;
     }
-    
+
     public function getName(): ?string
     {
         return $this->name;

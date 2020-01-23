@@ -36,12 +36,11 @@ class ApiAuthController extends AbstractController
         ));
 
         $violations = $validator->validate($data, $constraint);
-        
-        if ($violations->count() > 0) 
-        {
+
+        if ($violations->count() > 0) {
             return new JsonResponse(["error" => (string) $violations], 500);
         }
-        
+
         $username = $data['firstname'] . $data['lastname'];
         $password = $data['password'];
         $email = strtolower($data['email']);
@@ -50,7 +49,7 @@ class ApiAuthController extends AbstractController
         $token = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 20);;
 
         $encoded = $this->encoder->encodePassword($user, $password);
-        $user->setUsername($username)
+        $user->setName($username)
             ->setPassword($encoded)
             ->setEmail($email)
             ->setRoles(['ROLE_USER'])
@@ -60,9 +59,7 @@ class ApiAuthController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-        } 
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             return new JsonResponse(["error" => $e->getMessage()], 500);
         }
 
@@ -72,13 +69,15 @@ class ApiAuthController extends AbstractController
             ->setFrom('semainerush.supagency@gmail.com')
             ->setTo('decobert.a78@gmail.com')
             ->setBody(
-              $this->renderView(
-                'email/confirmation.html.twig',
-                [
-                  'confirmationUrl' => $link,
-                  'user' => $user
-                ]
-              ), 'text/html');
+                $this->renderView(
+                    'email/confirmation.html.twig',
+                    [
+                        'confirmationUrl' => $link,
+                        'user' => $user
+                    ]
+                ),
+                'text/html'
+            );
 
         $mailer->send($message);
 
@@ -90,26 +89,25 @@ class ApiAuthController extends AbstractController
      * @Route("/auth/confirmation/{id}/{token}", methods={"GET"}, name="confirmation")
      */
 
-     public function confirmAccount($id, $token)
-     {
+    public function confirmAccount($id, $token)
+    {
 
 
         $user = $this->getDoctrine()
-                ->getRepository(User::class)
-                ->FindOneBy(['id' => $id, 'token' => $token]);
-        if($user) {
-          $user->setIsEnable(1);
+            ->getRepository(User::class)
+            ->FindOneBy(['id' => $id, 'token' => $token]);
+        if ($user) {
+            $user->setIsEnable(1);
 
-          $entityManager = $this->getDoctrine()->getManager();
-          $entityManager->persist($user);
-          $entityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-          return new JsonResponse(['success' => 'Account is Enable'], 200);
-        }else {
-          return new JsonResponse(['error' => 'Account is not Enable'], 400);
+            return new JsonResponse(['success' => 'Account is Enable'], 200);
+        } else {
+            return new JsonResponse(['error' => 'Account is not Enable'], 400);
         }
-        
-     }
+    }
     /**
      * @Route(path="api/auth/reset", methods={"POST"}, name="api_auth_reset")
      */
@@ -121,10 +119,10 @@ class ApiAuthController extends AbstractController
         );
 
         $user = $this->getDoctrine()
-                ->getRepository(User::class)
-                ->FindOneByEmail($data['email']);
+            ->getRepository(User::class)
+            ->findOneByEmail($data['email']);
 
-        if($user){
+        if ($user) {
             $plainPassword = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 10);;
             $encoded = $this->encoder->encodePassword($user, $plainPassword);
             $user->setPassword($encoded);
@@ -137,14 +135,16 @@ class ApiAuthController extends AbstractController
                 ->setFrom('semainerush.supagency@gmail.com')
                 ->setTo('decobert.a78@gmail.com')
                 ->setBody(
-                  $this->renderView(
-                    'email/reset_password.html.twig',
-                    ['password' => $plainPassword]
-                  ), 'text/html');
+                    $this->renderView(
+                        'email/reset_password.html.twig',
+                        ['password' => $plainPassword]
+                    ),
+                    'text/html'
+                );
 
             $mailer->send($message);
             return new JsonResponse(["status" => (string) "Email send"], 200);
-        }else {
+        } else {
             return $this->json(["lol" => 'haha']);
         }
     }
