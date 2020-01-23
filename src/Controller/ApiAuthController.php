@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +22,7 @@ class ApiAuthController extends AbstractController
     /**
      * @Route(path="api/auth/register", methods={"POST"}, name="api_auth_register")
      */
-    public function register(Request $request)
+    public function register(Request $request, UserRepository $Users)
     {
         $data = json_decode(
             $request->getContent(),
@@ -39,6 +40,30 @@ class ApiAuthController extends AbstractController
         if ($violations->count() > 0) {
             return new JsonResponse(["error" => (string) $violations], 500);
         }
+
+        if (!preg_match("/.+\..+@supinternet\.fr/", $data['email'])) {
+            return new JsonResponse(["error" => (string) $violations], 500);
+        }
+
+        $dbEmails = $users->getEmails();
+
+        if (in_array($data['email'], $dbEmails)) {
+            return new JsonResponse(["error" => (string) $violations], 500);
+        }
+        if (preg_match("/.+[0-9]+.+/", $data['email'])) {
+            $emailStrip = preg_replace("/[0-9]+/", "", $data['email']);
+            if (in_array($emailStrip, $dbEmails)) {
+                return new JsonResponse(["error" => (string) $violations], 500);
+            }
+        } else {
+            foreach ($dbEmails as $bdEmail) {
+                $emailStrip = preg_replace("/[0-9]+/", "", $dbEmail);
+                if (in_array($emailStrip, $dbEmails)) {
+                    return new JsonResponse(["error" => (string) $violations], 500);
+                }
+            }
+        }
+
         $username = $data['username'];
         $password = $data['password'];
         $email = $data['email'];
