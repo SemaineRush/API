@@ -3,8 +3,36 @@ easy_admin:
    entities:
        Election:
          class: App\Entity\Election
+         list:
+          fields: ['id','start','endduration','localisation','candidateElection','users']
+         form:
+          fields:
+             - 'start'
+             - 'endduration'
+             - 'localisation'
+             - 'candidateElection'
+             -   property: 'users'
+                 type: 'entity'
+                 type_options:
+                     multiple: true
+                     class: 'App\Entity\User'
+                     by_reference: false
+             # - { property: 'rol
        Cadidate:
          class: App\Entity\Candidate
+         list:
+          fields: ['id','stylesheet','elections','userRelated','informations','scores']
+         form:
+          fields:
+             - 'stylesheet'
+             - 'userRelated'
+             - 'scores'
+             -   property: 'elections'
+                 type: 'entity'
+                 type_options:
+                     multiple: true
+                     class: 'App\Entity\Election'
+                     by_reference: false
        User:
          class: App\Entity\User
          form:
@@ -12,3 +40,5 @@ easy_admin:
                - { property: 'email' }
                - { property: 'password' }
                - { property: 'roles', type: 'choice', type_options: { expanded: true, multiple: true, choices: { 'ROLE_USER': 'Normal user', 'ROLE_ADMIN': 'Administrator' } } }
+       Score:
+         class: App\Entity\Score
