@@ -48,9 +48,9 @@ class ApiAuthController extends AbstractController
 
         $dbEmails = $userrepo->findAll();
 
-        // if (in_array($data['email'], $dbEmails)) {
-        //     return new JsonResponse(["error" => "This email has already been registered"], 500);
-        // }
+        if (in_array($data['email'], $dbEmails)) {
+            return new JsonResponse(["error" => "This email has already been registered"], 500);
+        }
         if (preg_match("/.+[0-9]+.+/", $data['email'])) {
             $emailStrip = preg_replace("/[0-9]+/", "", $data['email']);
             if (in_array($emailStrip, $dbEmails)) {
