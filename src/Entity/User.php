@@ -93,15 +93,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Election[]
-     */
-    public function getElections(): Collection
-    {
-        return $this->elections;
-    }
-
-
-    /**
      * Get the value of roles
      */
     public function getRoles()
