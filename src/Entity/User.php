@@ -58,7 +58,6 @@ class User implements UserInterface
     private $candidate;
 
     /**
-<<<<<<< HEAD
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_enable;
@@ -67,12 +66,12 @@ class User implements UserInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $token;
-=======
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"user_read"})
-     */
+
+    /**
+    * @ORM\Column(type="string", length=255)
+    * @Groups({"user_read"})
+    */
     private $name;
->>>>>>> 79c27f9e808c10c7fee15ad4b4e3edd0ac54ded6
 
     public function __construct()
     {
