@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("email")
@@ -41,7 +42,6 @@ class User implements UserInterface
     /**
      * @var string
      * @ORM\Column(name="email",type="string",unique=true)
-     * @Assert\Email
      * @Groups({"candidates_read","user"})
      */
     private $email;

@@ -47,8 +47,12 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
-
-    public function getEmails() {
-        return $this->createQuery("SELECT u.email FROM User u");
+    public function getEmails()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT u.email FROM character u"
+            )
+            ->getResult();
     }
 }

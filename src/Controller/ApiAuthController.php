@@ -22,7 +22,7 @@ class ApiAuthController extends AbstractController
     /**
      * @Route(path="api/auth/register", methods={"POST"}, name="api_auth_register")
      */
-    public function register(Request $request, UserRepository $users)
+    public function register(Request $request, UserRepository $userrepo)
     {
         $data = json_decode(
             $request->getContent(),
@@ -46,18 +46,18 @@ class ApiAuthController extends AbstractController
             return new JsonResponse(["error" => "This email is not from Sup'Internet"], 500);
         }
 
-        $dbEmails = $users->getEmails();
+        $dbEmails = $userrepo->findAll();
 
-        if (in_array($data['email'], $dbEmails)) {
-            return new JsonResponse(["error" => "This email has already been registered"], 500);
-        }
+        // if (in_array($data['email'], $dbEmails)) {
+        //     return new JsonResponse(["error" => "This email has already been registered"], 500);
+        // }
         if (preg_match("/.+[0-9]+.+/", $data['email'])) {
             $emailStrip = preg_replace("/[0-9]+/", "", $data['email']);
             if (in_array($emailStrip, $dbEmails)) {
                 return new JsonResponse(["error" => "An email too similar has already been registered, contact an administrator to get further informations"], 500);
             }
         } else {
-            foreach ($dbEmails as $bdEmail) {
+            foreach ($dbEmails as $dbEmail) {
                 $emailStrip = preg_replace("/[0-9]+/", "", $dbEmail);
                 if (in_array($emailStrip, $dbEmails)) {
                     return new JsonResponse(["error" => "An email too similar has already been registered, contact an administrator to get further informations"], 500);
@@ -65,7 +65,7 @@ class ApiAuthController extends AbstractController
             }
         }
 
-        $username = $data['username'];
+        $username = $data['lastname'] . $data['firstname'];
         $password = $data['password'];
         $email = $data['email'];
         $user = new User();
