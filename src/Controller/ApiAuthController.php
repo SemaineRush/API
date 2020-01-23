@@ -48,7 +48,7 @@ class ApiAuthController extends AbstractController
         $dbEmails = $users->getEmails();
 
         if (in_array($data['email'], $dbEmails)) {
-            return new JsonResponse(["error" => "This email has already been registered", 500);
+            return new JsonResponse(["error" => "This email has already been registered"], 500);
         }
         if (preg_match("/.+[0-9]+.+/", $data['email'])) {
             $emailStrip = preg_replace("/[0-9]+/", "", $data['email']);
