@@ -62,6 +62,7 @@ class Election
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="election")
+     * @Groups({"election_read"})
      */
     private $users;
 

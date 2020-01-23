@@ -14,8 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @Table(name="character")
  * * @ApiResource(
- *     normalizationContext={"groups"={"user", "user:read"}},
- *     denormalizationContext={"groups"={"user", "user:write"}}
+ *     normalizationContext={"groups"={"user_read"}},
  * )
  */
 class User implements UserInterface
@@ -24,21 +23,15 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"candidates_read","user"})
+     * @Groups({"user_read"})
      */
     private $id;
 
+    
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({"candidates_read","user"})
-     */
-    private $username;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     * @Groups({"candidates_read","user"})
+     * @Groups({"user_read"})
      */
     private $email;
 
@@ -56,13 +49,21 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Election", inversedBy="users")
+     * @Groups({"user_read"})
      */
     private $election;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated", orphanRemoval=true)
+     * @Groups({"user_read"})
      */
     private $candidate;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"user_read"})
+     */
+    private $name;
 
     public function __construct()
     {
@@ -165,29 +166,17 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * Get the value of username
+     /**
+     * A visual identifier that represents this user.
      *
-     * @return  string
+     * @see UserInterface
      */
-    public function getUsername()
+    public function getUsername(): string
     {
-        return $this->email;
+        return (string) $this->email;
     }
 
-    /**
-     * Set the value of username
-     *
-     * @param  string  $username
-     *
-     * @return  self
-     */
-    public function setUsername(string $username)
-    {
-        $this->username = $username;
 
-        return $this;
-    }
 
     /**
      * Get the value of email
@@ -268,6 +257,18 @@ class User implements UserInterface
                 $candidate->setUserRelated(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

@@ -18,7 +18,13 @@ use Doctrine\DBAL\Schema\Table;
  *     "groups"={"candidates_read"}
  *  },
  *      collectionOperations={"get"},
- *      itemOperations={"get"}
+ *      itemOperations={"GET","PUT","DELETE","increment"={
+ *              "method"="post", 
+ *              "path"="/invoices/{id}/increment",
+ *              "controller"="App\Controller\InvoiceIncrementationController",
+ *              "swagger_context"={"summary"="string", "description"="date-time"},
+ *          }
+ *     },
  * )
  * 
  */
@@ -62,6 +68,7 @@ class Candidate
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidate")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"candidates_read"})
      */
     private $userRelated;
 
