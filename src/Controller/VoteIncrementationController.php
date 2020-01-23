@@ -21,6 +21,7 @@ class VoteIncrementationController extends AbstractController {
         $user = $this->getCurrentUser(); // current user
         $election = $election->findOneById($electionId);
         $users = $election->getUsers();
+        $candidate = $candidate->findOneById($cadidateId);
 
         $voters = [];
         foreach($users as $voter) {
@@ -35,10 +36,8 @@ class VoteIncrementationController extends AbstractController {
         $election->addUser($user);
         $em->persist($election);
 
-        $candidate = $candidate->findOneById($cadidateId);
         $vote = new Score;
-        $vote->addCandidate($candidate);
-        
+        $vote->setCandidate($candidate);
         $em->persist($vote);
         
         $em->flush();
