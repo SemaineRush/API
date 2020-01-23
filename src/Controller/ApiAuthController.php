@@ -42,24 +42,24 @@ class ApiAuthController extends AbstractController
         }
 
         if (!preg_match("/.+\..+@supinternet\.fr/", $data['email'])) {
-            return new JsonResponse(["error" => (string) $violations], 500);
+            return new JsonResponse(["error" => "This email is not from Sup'Internet"], 500);
         }
 
         $dbEmails = $users->getEmails();
 
         if (in_array($data['email'], $dbEmails)) {
-            return new JsonResponse(["error" => (string) $violations], 500);
+            return new JsonResponse(["error" => "This email has already been registered", 500);
         }
         if (preg_match("/.+[0-9]+.+/", $data['email'])) {
             $emailStrip = preg_replace("/[0-9]+/", "", $data['email']);
             if (in_array($emailStrip, $dbEmails)) {
-                return new JsonResponse(["error" => (string) $violations], 500);
+                return new JsonResponse(["error" => "An email too similar has already been registered, contact an administrator to get further informations"], 500);
             }
         } else {
             foreach ($dbEmails as $bdEmail) {
                 $emailStrip = preg_replace("/[0-9]+/", "", $dbEmail);
                 if (in_array($emailStrip, $dbEmails)) {
-                    return new JsonResponse(["error" => (string) $violations], 500);
+                    return new JsonResponse(["error" => "An email too similar has already been registered, contact an administrator to get further informations"], 500);
                 }
             }
         }
