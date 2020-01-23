@@ -67,14 +67,15 @@ class Candidate
     private $informations = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Score", inversedBy="candidate")
+     * @ORM\OneToMany(targetEntity="App\Entity\Score", mappedBy="candidate")
      */
-    private $score;
+    private $scores;
 
 
     public function __construct()
     {
         $this->elections = new ArrayCollection();
+        $this->scores = new ArrayCollection();
        
     }
 
@@ -154,16 +155,34 @@ class Candidate
         return $this;
     }
 
-    public function getScore(): ?Score
+    /**
+     * @return Collection|Score[]
+     */
+    public function getScores(): Collection
     {
-        return $this->score;
+        return $this->scores;
     }
 
-    public function setScore(?Score $score): self
+    public function addScore(Score $score): self
     {
-        $this->score = $score;
+        if (!$this->scores->contains($score)) {
+            $this->scores[] = $score;
+            $score->setCandidate($this);
+        }
 
         return $this;
     }
 
+    public function removeScore(Score $score): self
+    {
+        if ($this->scores->contains($score)) {
+            $this->scores->removeElement($score);
+            // set the owning side to null (unless already changed)
+            if ($score->getCandidate() === $this) {
+                $score->setCandidate(null);
+            }
+        }
+
+        return $this;
+    }
 }
