@@ -35,7 +35,7 @@ class VoteIncrementationController extends AbstractController {
         $em->persist($election);
 
         $candidate = $candidate->findOneById($cadidateId);
-        $candidate->getNbVotes() + 1;
+        $candidate->setScore($candidate->getScore() + 1);
         $em->persist($candidate);
         
         $em->flush();
