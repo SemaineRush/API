@@ -22,24 +22,39 @@ class ElectionController extends AbstractController
         
         $candidates = $election->getCandidateElection();
         
-        $orderedCandidates = [];
-        foreach ($candidates as $candidate) 
+        // calcule total score
+        $scores = 0;
+        foreach ($candidates as $c) 
         {
-            $orderedCandidates[$candidate->getUserRelated()->getUsername()] = count($candidate->getScores());
+            $score = count($c->getScores());
+            $scores += $score;
+        }
+
+        // candidate score
+        $candidatesElection = [];
+        foreach ($candidates as $candidate)
+        {
+            $candidateScore = count($candidate->getScores());
+
+            $candidatesElection[$candidate->getUserRelated()->getUsername()] = [
+                "votes" => $candidateScore,
+                "percentage" => ($candidateScore / $scores) * 100
+            ];
         }
         
         $lastElection['id'] = $election->getId();
         $lastElection['name'] = $election->getName();
+        $lastElection['total_votes'] = $scores;
 
         if ($now > $election->getEndduration()) 
         {
             $lastElection['finished'] = true;
-            $lastElection['winner'] = array_keys($orderedCandidates, max($orderedCandidates))[0];
+            $lastElection['winner'] = array_keys($candidatesElection, max($candidatesElection))[0];
         }
         else
         {
             $lastElection['finished'] = false;
-            $lastElection['candidates'] = $orderedCandidates;
+            $lastElection['candidates'] = $candidatesElection;
         }
 
         $lastElection['start'] = $election->getStart();
