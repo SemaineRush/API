@@ -42,11 +42,11 @@ class ApiAuthController extends AbstractController
         }
         $username = $data['firstname'] . $data['lastname'];
         $password = $data['password'];
-        $email = $data['email'];
+        $email = strtolower($data['email']);
         $user = new User();
 
         $encoded = $this->encoder->encodePassword($user, $password);
-        $user->setUsername($username)
+        $user->setName($username)
             ->setPassword($encoded)
             ->setEmail($email)
             ->setRoles(['ROLE_USER']);
