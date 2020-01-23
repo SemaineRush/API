@@ -53,7 +53,7 @@ class AppFixtures extends Fixture
 
             $election = new Election;
             $election->setEndduration($faker->dateTimeBetween("-1 months"))
-                ->setStart($faker->dateTimeBetween("-2 months"))
+                ->setStart($faker->dateTimeBetween("-3 months"))
                 ->setLocalisation("Paris")
                 ->setName("election BDE");
             $manager->persist($election);
