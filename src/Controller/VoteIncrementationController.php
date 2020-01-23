@@ -24,7 +24,8 @@ class VoteIncrementationController extends AbstractController {
         $candidate = $candidate->findOneById($cadidateId);
 
         $voters = [];
-        foreach($users as $voter) {
+        foreach($users as $voter) 
+        {
             $voters[] = $voter->getEmail();
         }
 
@@ -47,10 +48,12 @@ class VoteIncrementationController extends AbstractController {
 
     private function getCurrentUser()
     {
-        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) 
+        {
             return;
         }
-        if (!is_object($user = $token->getUser())) {
+        if (!is_object($user = $token->getUser())) 
+        {
             return;
         }
         return $user;
