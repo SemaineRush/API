@@ -30,7 +30,8 @@ class ApiAuthController extends AbstractController
         $validator = Validation::createValidator();
         $constraint = new Assert\Collection(array(
             // the keys correspond to the keys in the input array
-            'username' => new Assert\Length(array('min' => 1)),
+            'firstname' => new Assert\Length(array('min' => 1)),
+            'lastname' => new Assert\Length(array('min' => 1)),
             'password' => new Assert\Length(array('min' => 1)),
             'email' => new Assert\Email(),
         ));
@@ -39,7 +40,7 @@ class ApiAuthController extends AbstractController
         if ($violations->count() > 0) {
             return new JsonResponse(["error" => (string) $violations], 500);
         }
-        $username = $data['username'];
+        $username = $data['firstname'] . $data['lastname'];
         $password = $data['password'];
         $email = $data['email'];
         $user = new User();
