@@ -14,14 +14,28 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        login:
-            pattern:  ^/api/login
+        # login:
+        #     pattern:  ^/api/login
+        #     stateless: true
+        #     anonymous: true
+        #     json_login:
+        #         check_path:               /api/login_check
+        #         success_handler:          lexik_jwt_authentication.handler.authentication_success
+        #         failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+        api_login:
+            pattern:  ^/api/auth/login
             stateless: true
             anonymous: true
             json_login:
-                check_path:               /api/login_check
-                success_handler:          lexik_jwt_authentication.handler.authentication_success
-                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                provider: app_user_provider
+                check_path: /api/auth/login
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            provider: app_user_provider
+        api_register:
+            pattern:  ^/api/auth/register
+            stateless: true
+            anonymous: true
         api:
             pattern:   ^/api
             anonymous: false
@@ -30,13 +44,13 @@ security:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
         main:
+            logout:
+                path: app_logout
             anonymous: true
             guard:
                 authenticators:
                     - App\Security\AdminAuthenticator
-            logout:
-                path: app_logout
-                target: /
+            
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -47,9 +61,13 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/api/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/api/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/auth/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/auth/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
