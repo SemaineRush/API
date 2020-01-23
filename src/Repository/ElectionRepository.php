@@ -19,6 +19,15 @@ class ElectionRepository extends ServiceEntityRepository
         parent::__construct($registry, Election::class);
     }
 
+    public function findAllOrderByEndDesc()
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.endduration', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Elections[] Returns an array of Elections objects
     //  */

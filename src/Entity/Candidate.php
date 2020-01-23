@@ -18,7 +18,13 @@ use Doctrine\DBAL\Schema\Table;
  *     "groups"={"candidates_read"}
  *  },
  *      collectionOperations={"get"},
- *      itemOperations={"get"}
+ *      itemOperations={"GET","PUT","DELETE","increment"={
+ *              "method"="post", 
+ *              "path"="/invoices/{id}/increment",
+ *              "controller"="App\Controller\InvoiceIncrementationController",
+ *              "swagger_context"={"summary"="string", "description"="date-time"},
+ *          }
+ *     },
  * )
  * 
  */
@@ -41,12 +47,6 @@ class Candidate
     private $stylesheet;
 
     /**
-     * @ORM\Column(type="text")
-     * @Groups({"candidates_read","election_read"})
-     */
-    private $infos;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Election", mappedBy="candidateElection")
      * @Groups({"candidates_read"})
      */
@@ -54,24 +54,28 @@ class Candidate
 
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"candidates_read","election_read"})
-     */
-    private $nb_votes;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidate")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"candidates_read"})
      */
     private $userRelated;
 
-   
+    /**
+     * @ORM\Column(type="json")
+     * @Groups({"candidates_read","election_read"})
+     */
+    private $informations = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Score", mappedBy="candidate")
+     */
+    private $scores;
 
 
     public function __construct()
     {
         $this->elections = new ArrayCollection();
+        $this->scores = new ArrayCollection();
        
     }
 
@@ -92,17 +96,6 @@ class Candidate
         return $this;
     }
 
-    public function getInfos(): ?string
-    {
-        return $this->infos;
-    }
-
-    public function setInfos(string $infos): self
-    {
-        $this->infos = $infos;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Election[]
@@ -138,18 +131,6 @@ class Candidate
         return $this->userRelated->getEmail();
     }
 
-    public function getNbVotes(): ?int
-    {
-        return $this->nb_votes;
-    }
-
-    public function setNbVotes(?int $nb_votes): self
-    {
-        $this->nb_votes = $nb_votes;
-
-        return $this;
-    }
-
     public function getUserRelated(): ?User
     {
         return $this->userRelated;
@@ -162,4 +143,46 @@ class Candidate
         return $this;
     }
 
+    public function getInformations(): ?array
+    {
+        return $this->informations;
+    }
+
+    public function setInformations(array $informations): self
+    {
+        $this->informations = $informations;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Score[]
+     */
+    public function getScores(): Collection
+    {
+        return $this->scores;
+    }
+
+    public function addScore(Score $score): self
+    {
+        if (!$this->scores->contains($score)) {
+            $this->scores[] = $score;
+            $score->setCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScore(Score $score): self
+    {
+        if ($this->scores->contains($score)) {
+            $this->scores->removeElement($score);
+            // set the owning side to null (unless already changed)
+            if ($score->getCandidate() === $this) {
+                $score->setCandidate(null);
+            }
+        }
+
+        return $this;
+    }
 }
