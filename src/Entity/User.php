@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Webmozart\Assert\Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Table as Table;
 use Doctrine\Common\Collections\Collection;
@@ -9,9 +10,11 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
  * @Table(name="character")
  * * @ApiResource(
  *     normalizationContext={"groups"={"user", "user:read"}},
@@ -37,7 +40,8 @@ class User implements UserInterface
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="email",type="string",unique=true)
+     * @Assert\Email
      * @Groups({"candidates_read","user"})
      */
     private $email;
@@ -85,7 +89,7 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-    
+
 
     public function __toString()
     {
@@ -184,7 +188,7 @@ class User implements UserInterface
      * Get the value of email
      *
      * @return  string
-     */ 
+     */
     public function getEmail()
     {
         return $this->email;
@@ -196,7 +200,7 @@ class User implements UserInterface
      * @param  string  $email
      *
      * @return  self
-     */ 
+     */
     public function setEmail(string $email)
     {
         $this->email = $email;
@@ -204,7 +208,7 @@ class User implements UserInterface
         return $this;
     }
 
-    
+
 
     /**
      * @return Collection|Election[]
