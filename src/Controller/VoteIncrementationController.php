@@ -12,16 +12,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class VoteIncrementationController extends AbstractController {
     
     /**
-     * @Route("/api/vote/{electionId}/{cadidateId}", name="vote", methods={"POST"})
+     * @Route("/api/vote/{electionId}/{candidateId}", name="vote", methods={"POST"})
      */
-    public function score(int $electionId, int $cadidateId, CandidateRepository $candidate, ElectionRepository $election)
+    public function score(int $electionId, int $candidateId, CandidateRepository $candidate, ElectionRepository $election)
     {
         $em = $this->getDoctrine()->getManager();
         
         $user = $this->getCurrentUser(); // current user
         $election = $election->findOneById($electionId);
         $users = $election->getUsers();
-        $candidate = $candidate->findOneById($cadidateId);
+        $candidate = $candidate->findOneById($candidateId);
 
         $voters = [];
         foreach($users as $voter) 
@@ -38,7 +38,14 @@ class VoteIncrementationController extends AbstractController {
         $em->persist($election);
 
         $vote = new Score;
-        $vote->setCandidate($candidate);
+        if ($candidateId == 0)
+        { 
+            $vote->setCandidate(null); 
+        }
+        else 
+        { 
+            $vote->setCandidate($candidate); 
+        }
         $em->persist($vote);
         
         $em->flush();
