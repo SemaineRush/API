@@ -24,11 +24,16 @@ class ElectionController extends AbstractController
         
         // calcule total score
         $scores = 0;
-        foreach ($candidates as $c) 
+        foreach ($candidates as $c)
         {
             $score = count($c->getScores());
             $scores += $score;
         }
+
+        // get number of null votes
+        $voters = $election->getUsers();
+        $scoreWhite = count($voters) - $scores;
+        $scores = $scores + $scoreWhite;
 
         // candidate score
         $candidatesElection = [];
@@ -51,6 +56,7 @@ class ElectionController extends AbstractController
         $lastElection['id'] = $election->getId();
         $lastElection['name'] = $election->getName();
         $lastElection['total_votes'] = $scores;
+        $lastElection['white_votes'] = $scoreWhite;
 
         if ($now > $election->getEndduration()) 
         {
