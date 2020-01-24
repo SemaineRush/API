@@ -120,15 +120,15 @@ class ApiAuthController extends AbstractController
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->FindOneBy(['id' => $id, 'token' => $token]);
-
+            
         if ($user->getToken() == $token) {
-            $user->setIsEnable(1);
+          $user->setIsEnable(1);
+          
+          $entityManager = $this->getDoctrine()->getManager();
+          $entityManager->persist($user);
+          $entityManager->flush();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return new JsonResponse(['success' => 'Account is Enable'], 200);
+          return $this->redirect('https://supvote.herokuapp.com/');
         } else {
             return new JsonResponse(['error' => 'Account is not Enable'], 400);
         }
