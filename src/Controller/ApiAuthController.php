@@ -49,7 +49,7 @@ class ApiAuthController extends AbstractController
         $dbEmails =  $this->getDoctrine()->getManager()->getRepository('App\\Entity\\User')->findAll();
         
         if (in_array($data['email'], $dbEmails)) {
-          return new JsonResponse(["error" => "This email has already been registered"], 500);
+            return new JsonResponse(["error" => "This email has already been registered"], 500);
         }
         
         if (preg_match("/.+[0-9]+.+/", $data['email'])) {
@@ -66,7 +66,7 @@ class ApiAuthController extends AbstractController
             }
         }
 
-        $username = $data['firstname'] . $data['lastname'];
+        $username = $data['firstname'] . ' ' . $data['lastname'];
         $password = $data['password'];
         $email = strtolower($data['email']);
         $user = new User();
