@@ -23,7 +23,7 @@ class ApiAuthController extends AbstractController
     /**
      * @Route(path="api/auth/register", methods={"POST"}, name="api_auth_register")
      */
-    public function register(Request $request, \Swift_Mailer $mailer, UserRepository $userrepo)
+    public function register(Request $request, \Swift_Mailer $mailer)
     {
         $data = json_decode($request->getContent(), true);
 
@@ -41,30 +41,31 @@ class ApiAuthController extends AbstractController
         if ($violations->count() > 0) {
             return new JsonResponse(["error" => (string) $violations], 500);
         }
-        // if (!preg_match("/.+\..+@supinternet\.fr/", $data['email'])) {
-        //     return new JsonResponse(["error" => "This email is not from Sup'Internet"], 500);
-        // }
+        
+        if (!preg_match("/.+\..+@supinternet\.fr/", $data['email'])) {
+            return new JsonResponse(["error" => "This email is not from Sup'Internet"], 500);
+        }
 
-        // $dbEmails = $userrepo->getEmails();
+        $dbEmails =  $this->getDoctrine()->getManager()->getRepository('App\\Entity\\User')->findAll();
+        
+        if (in_array($data['email'], $dbEmails)) {
+          return new JsonResponse(["error" => "This email has already been registered"], 500);
+        }
+        
+        if (preg_match("/.+[0-9]+.+/", $data['email'])) {
+            $emailStrip = preg_replace("/[0-9]+/", "", $data['email']);
+            if (in_array($emailStrip, $dbEmails)) {
+                return new JsonResponse(["error" => "1 : An email too similar has already been registered, contact an administrator to get further informations"], 500);
+            }
+        } else {
+            foreach ($dbEmails as $dbEmail) {
+                $emailStrip = preg_replace("/[0-9]+/", "", $dbEmail);
+                if ($emailStrip == $data['email']) {
+                    return new JsonResponse(["error" => "2 : An email too similar has already been registered, contact an administrator to get further informations"], 500);
+                }
+            }
+        }
 
-        // if (in_array($data['email'], $dbEmails)) {
-        //     return new JsonResponse(["error" => "This email has already been registered"], 500);
-        // }
-        // if (preg_match("/.+[0-9]+.+/", $data['email'])) {
-        //     $emailStrip = preg_replace("/[0-9]+/", "", $data['email']);
-        //     if (in_array($emailStrip, $dbEmails)) {
-        //         return new JsonResponse(["error" => "1 : An email too similar has already been registered, contact an administrator to get further informations"], 500);
-        //     }
-        // } else {
-        //     foreach ($dbEmails as $dbEmail) {
-        //         $emailStrip = preg_replace("/[0-9]+/", "", $dbEmail);
-        //         if ($emailStrip == $data['email']) {
-        //             return new JsonResponse(["error" => "2 : An email too similar has already been registered, contact an administrator to get further informations"], 500);
-        //         }
-        //     }
-        // }
-
-        $username = $data['lastname'] . $data['firstname'];
         $username = $data['firstname'] . $data['lastname'];
         $password = $data['password'];
         $email = strtolower($data['email']);
