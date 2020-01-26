@@ -1,9 +1,9 @@
 <html>
 <h1>
-Bonjour {{ user.username }} !
+Bonjour {{ user.name }} !
 </h1>
 <p>
-Pour valider votre compte, cliquez sur ce lien : {{ confirmationUrl }}
+Pour valider votre compte, cliquez sur ce lien : <a href="{{ confirmationUrl }}">{{ confirmationUrl }}</a>
 </p>
 <p>
 Bien cordialement,<br>
