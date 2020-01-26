@@ -18,7 +18,7 @@ easy_admin:
                      class: 'App\Entity\User'
                      by_reference: false
              # - { property: 'rol
-       Cadidate:
+       Candidate:
          class: App\Entity\Candidate
          list:
           fields: ['id','stylesheet','elections','userRelated','informations','scores']
