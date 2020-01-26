@@ -148,7 +148,10 @@ class ApiAuthController extends AbstractController
             ->findOneByEmail($data['email']);
 
         if ($user) {
-            $plainPassword = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 10);;
+            $strPass = ucfirst(substr(str_shuffle('abcdefghijklmnopqrstuvwxyz'), 0, 10));
+            $numberPass = substr(str_shuffle('0123456789'), 0, 4);
+
+            $plainPassword = $strPass . $numberPass;
             $encoded = $this->encoder->encodePassword($user, $plainPassword);
             $user->setPassword($encoded);
 
