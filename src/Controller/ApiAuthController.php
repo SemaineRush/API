@@ -158,7 +158,7 @@ class ApiAuthController extends AbstractController
 
             $message = (new \Swift_Message('Hello Email'))
                 ->setFrom('semainerush.supagency@gmail.com')
-                ->setTo('decobert.a78@gmail.com')
+                ->setTo($data['email'])
                 ->setBody(
                     $this->renderView(
                         'email/reset_password.html.twig',
