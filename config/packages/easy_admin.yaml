@@ -27,7 +27,7 @@ easy_admin:
              - 'stylesheet'
              - 'userRelated'
              - 'scores'
-            #  - { property: 'informations', type: 'App\Form\Type\JsonType' }
+             - { property: 'informations', type: 'App\Form\Type\JsonType' }
              -   property: 'elections'
                  type: 'entity'
                  type_options:
