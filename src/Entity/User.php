@@ -54,6 +54,14 @@ class User implements UserInterface
      */
     private $election;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="azure_id", type="string", length=255, unique=true, nullable=true)
+     */
+    protected $azureId;
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Candidate", mappedBy="userRelated", orphanRemoval=true)
      * @Groups({"user_read"})
@@ -290,6 +298,30 @@ class User implements UserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of azureId
+     *
+     * @return  string
+     */
+    public function getAzureId()
+    {
+        return $this->azureId;
+    }
+
+    /**
+     * Set the value of azureId
+     *
+     * @param  string  $azureId
+     *
+     * @return  self
+     */
+    public function setAzureId(string $azureId)
+    {
+        $this->azureId = $azureId;
 
         return $this;
     }

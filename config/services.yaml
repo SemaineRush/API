@@ -23,5 +23,10 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    # hwi_oauth.user.provider.entity:
+    #     class: HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider    
+    # my.oauth_aware.user_provider.service:
+    #     class: App\Security\OAuthProvider
+    #     arguments: ['@session', '@doctrine', '@service_container']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

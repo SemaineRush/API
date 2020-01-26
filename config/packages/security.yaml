@@ -22,6 +22,17 @@ security:
         #         check_path:               /api/login_check
         #         success_handler:          lexik_jwt_authentication.handler.authentication_success
         #         failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
+        # secured_area:
+            # anonymous: ~
+            # oauth:
+            #     resource_owners:
+            #         azure:           "/login/check-azure"
+            #     login_path:        /login/check-azure
+            #     use_forward:       false
+            #     failure_path:      /login
+            #     oauth_user_provider:
+            #         service: my.oauth_aware.user_provider.service
         api_login:
             pattern:  ^/api/auth/login
             stateless: true
@@ -67,6 +78,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/signin, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/loginazure, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/auth/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/auth/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
