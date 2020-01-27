@@ -151,7 +151,7 @@ class ApiAuthController extends AbstractController
             $strPass = ucfirst(substr(str_shuffle('abcdefghijklmnopqrstuvwxyz'), 0, 10));
             $numberPass = substr(str_shuffle('0123456789'), 0, 4);
 
-            $plainPassword = $strPass . $numberPass;
+            $plainPassword = str_shuffle($strPass . $numberPass);
             $encoded = $this->encoder->encodePassword($user, $plainPassword);
             $user->setPassword($encoded);
 
@@ -173,7 +173,7 @@ class ApiAuthController extends AbstractController
             $mailer->send($message);
             return new JsonResponse(["status" => (string) "Email send"], 200);
         } else {
-            return $this->json(["lol" => 'haha']);
+            return $this->json(["error" => 'You do not have an account'], 400);
         }
     }
 }
