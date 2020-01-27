@@ -1,7 +1,8 @@
 <?php
+
+namespace App\Event\Listener;
 // src/EventListener/LoginListener.php
 
-namespace App\EventListener;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
