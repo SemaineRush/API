@@ -28,7 +28,6 @@ class Score
 
     public function __construct()
     {
-        
     }
 
     public function getId(): ?int
@@ -46,5 +45,9 @@ class Score
         $this->candidate = $candidate;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->candidate;
     }
 }
