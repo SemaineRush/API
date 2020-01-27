@@ -90,7 +90,7 @@ class ApiAuthController extends AbstractController
 
         $link = "https://testsamheroku.herokuapp.com/auth/confirmation/{$user->getId()}/{$user->getToken()}";
 
-        $message = (new \Swift_Message("SUP'Vote - Confirmer vôtre compte"))
+        $message = (new \Swift_Message("SUP'Vote - Confirmez vôtre compte"))
             ->setFrom('semainerush.supagency@gmail.com')
             ->setTo($email)
             ->setBody(
@@ -159,7 +159,7 @@ class ApiAuthController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $message = (new \Swift_Message('Hello Email'))
+            $message = (new \Swift_Message("SUP'Vote - Reinitialisation de vôtre mot de passe"))
                 ->setFrom('semainerush.supagency@gmail.com')
                 ->setTo($data['email'])
                 ->setBody(
