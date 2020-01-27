@@ -48,6 +48,6 @@ class Score
     }
     public function __toString()
     {
-        return $this->candidate;
+        return 'score';
     }
 }
