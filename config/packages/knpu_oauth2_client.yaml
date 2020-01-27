@@ -1,0 +1,15 @@
+knpu_oauth2_client:
+    clients:
+        azure:
+        # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
+            type: azure
+            client_id: '%env(AZURE_ID)%'
+            client_secret: '%env(AZURE_SECRET)%'
+            # the route that you're redirected to after
+            # see the controller example below
+            redirect_route: connect_azure_check
+            redirect_params: {}
+            url_login: 'https://login.microsoftonline.com/'
+            url_api: 'https://graph.windows.net/'
+            path_authorize: '/oauth2/authorize'
+            api_version: '1.6'
