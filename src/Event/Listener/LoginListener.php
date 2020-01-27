@@ -22,12 +22,13 @@ class LoginListener
     {
 
         // Get the User entity.
-        $user = $event->getAuthenticationToken()->getUser();
-        // $user->setIsEnable(TRUE);
+        // $user = $event->getAuthenticationToken()->getUser();
+        // // // $user->setIsEnable(TRUE);
         // var_dump($user->getIsEnable());
-        if ($user->getIsEnable() === TRUE) {
-            return new JsonResponse('Account not activated');
-        }
-        die;
+        // // die;
+        // if ($user->getIsEnable() !== TRUE) {
+        //     return new JsonResponse('Account not activated');
+        // }
+        // die;
     }
 }
