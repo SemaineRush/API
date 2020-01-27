@@ -4,6 +4,7 @@ namespace App\Event\Listener;
 // src/EventListener/LoginListener.php
 
 
+use Exception;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,13 +23,13 @@ class LoginListener
     {
 
         // Get the User entity.
-        // $user = $event->getAuthenticationToken()->getUser();
-        // // // $user->setIsEnable(TRUE);
-        // var_dump($user->getIsEnable());
-        // // die;
-        // if ($user->getIsEnable() !== TRUE) {
-        //     return new JsonResponse('Account not activated');
-        // }
-        // die;
+        $user = $event->getAuthenticationToken()->getUser();
+        // // $user->setIsEnable(TRUE);
+        if ($user->getIsEnable() !== TRUE) {
+            header("HTTP/1.1 401 Unauthorized");
+            // throw new Exception("Account not enable");
+
+            exit;
+        }
     }
 }
