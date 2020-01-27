@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ElectionController extends AbstractController
 {
     /**
-     * @Route("/api/election_current", methods={"GET"})
+     * @Route(name="current_election", path="/api/election_current", methods={"GET"})
      */
     public function electionCurrent(ElectionRepository $elections) : JsonResponse 
     {
@@ -66,9 +66,9 @@ class ElectionController extends AbstractController
         else
         {
             $lastElection['finished'] = false;
-            $lastElection['candidates'] = $candidatesElection;
         }
-
+        
+        $lastElection['candidates'] = $candidatesElection;
         $lastElection['start'] = $election->getStart();
         $lastElection['end'] = $election->getEndduration();
         $lastElection['localisation'] = $election->getLocalisation();

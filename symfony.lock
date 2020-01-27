@@ -171,6 +171,9 @@
     "lcobucci/jwt": {
         "version": "3.3.1"
     },
+    "league/oauth2-client": {
+        "version": "2.4.1"
+    },
     "lexik/jwt-authentication-bundle": {
         "version": "2.5",
         "recipe": {
