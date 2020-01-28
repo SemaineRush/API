@@ -26,9 +26,9 @@ class TestController extends AbstractController
     /**
      * @Route("/", name="message_index", methods={"GET"})
      */
-    public function index(CandidateRepository $testsam, NotificationSender $notif): Response
+    public function index(NotificationSender $notif): Response
     {
-        $notif->sendNotif('toto');
+        $notif->sendNotif('Fin de l\' élection');
         return $this->render('email/base.html.twig', []);
     }
 

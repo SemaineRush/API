@@ -21,7 +21,7 @@ class NotificationSender
     }
 
 
-    public function sendNotif($message)
+    public function sendNotif($message, $date)
     {
         $requestFactory = $streamFactory = new Psr17Factory();
         $oneSignal = new OneSignal($this->config, $this->httpClient, $requestFactory, $streamFactory);
@@ -29,6 +29,7 @@ class NotificationSender
             'contents' => [
                 'en' => $message
             ],
+            'send_after' => $date,
             'included_segments' => ['All'],
             'data' => ['foo' => 'bar'],
             'isAnyWeb' => true,
