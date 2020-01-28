@@ -58,12 +58,17 @@ class AzureController extends AbstractController
                 $user = $this->getDoctrine()
                     ->getRepository('App\\Entity\\User')
                     ->findOneByEmail($user->getUpn());
+                $user->setIsEnable(TRUE);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
                 return new JsonResponse(['token' => $JWTManager->create($user)]);
             } else {
                 $userNew = new User();
                 $userNew->setEmail($user->getUpn());
                 $userNew->setPassword('motdepas');
                 $userNew->setName($user->getFirstName() . "" . $user->getLastName());
+                $userNew->setIsEnable(TRUE);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($userNew);
                 $entityManager->flush();
