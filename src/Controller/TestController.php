@@ -28,7 +28,7 @@ class TestController extends AbstractController
      */
     public function index(NotificationSender $notif): Response
     {
-        $notif->sendNotif('Fin de l\' élection');
+        // $notif->sendNotif('Fin de l\' élection');
         return $this->render('email/base.html.twig', []);
     }
 
