@@ -47,7 +47,7 @@ class ElectionController extends AbstractController
                 $candidatePercentage = ($candidateScore / $scores) * 100;
             }
 
-            $candidatesElection[$candidate->getUserRelated()->getUsername()] = [
+            $candidatesElection[$candidate->getUserRelated()->getId()] = [
                 "votes" => $candidateScore,
                 "percentage" => $candidatePercentage
             ];
