@@ -29,7 +29,7 @@ class NotificationSender
             'contents' => [
                 'en' => $message
             ],
-            'send_after' => $date,
+            // 'send_after' => $date,
             'included_segments' => ['All'],
             'data' => ['foo' => 'bar'],
             'isAnyWeb' => true,
