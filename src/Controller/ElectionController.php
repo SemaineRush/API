@@ -45,9 +45,9 @@ class ElectionController extends AbstractController
             }
 
             $candidatesElection[$candidate->getUserRelated()->getId()] = [
-                "votes" => $candidateScore,
                 "idCandidate" => $candidate->getId(),
                 "info_candidate" => $candidate->getInformations(),
+                "votes" => $candidateScore,
                 "percentage" => $candidatePercentage
             ];
         }
@@ -59,7 +59,8 @@ class ElectionController extends AbstractController
 
         if ($now > $election->getEndduration()) {
             $lastElection['finished'] = true;
-            $lastElection['winner'] = array_keys($candidatesElection, max($candidatesElection))[0];
+
+            $lastElection['winner'] = array_keys($candidatesElection, max($candidatesElection))[2];
         } else {
             $lastElection['finished'] = false;
         }
