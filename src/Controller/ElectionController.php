@@ -45,9 +45,9 @@ class ElectionController extends AbstractController
             }
 
             $candidatesElection[$candidate->getUserRelated()->getId()] = [
+                "votes" => $candidateScore,
                 "idCandidate" => $candidate->getId(),
                 "info_candidate" => $candidate->getInformations(),
-                "votes" => $candidateScore,
                 "percentage" => $candidatePercentage
             ];
         }
