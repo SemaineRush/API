@@ -9,6 +9,7 @@ use OneSignal\OneSignal;
 use App\Repository\MessageRepository;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use App\Repository\CandidateRepository;
+use App\Repository\ElectionRepository;
 use App\Service\NotificationSender;
 use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,9 +27,11 @@ class TestController extends AbstractController
     /**
      * @Route("/", name="message_index", methods={"GET"})
      */
-    public function index(NotificationSender $notif): Response
+    public function index(NotificationSender $notif, ElectionRepository $elrepo): Response
     {
-        // $notif->sendNotif('Fin de l\' élection');
+        $election = $elrepo->findAll();
+        $lastTime = $election[0]->getEndDuration();
+        $notif->sendNotif('Fin de l\' élection', $lastTime);
         return $this->render('email/base.html.twig', []);
     }
 
