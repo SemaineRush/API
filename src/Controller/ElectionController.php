@@ -60,7 +60,7 @@ class ElectionController extends AbstractController
         if ($now > $election->getEndduration()) {
             $lastElection['finished'] = true;
 
-            $lastElection['winner'] = array_keys($candidatesElection, max($candidatesElection))[2];
+            $lastElection['winner'] = array_keys($candidatesElection, max($candidatesElection))[0];
         } else {
             $lastElection['finished'] = false;
         }
